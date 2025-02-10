@@ -42,5 +42,13 @@ describe('DetailComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+    // Tests
+    /// Vérifie que ça retourne bien en arrière
+    it("should get back", () => {
+        const checkGetBack = jest.spyOn(window.history, "back");
+        component.back();
+        expect(checkGetBack).toHaveBeenCalled();
+    });
 });
 
