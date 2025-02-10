@@ -43,7 +43,7 @@ describe('MeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-    // Tests
+    // Tests unitaires
     /// Vérifie que ça retourne bien en arrière
     it("should get back", () => {
         const checkGetBack = jest.spyOn(window.history, "back");

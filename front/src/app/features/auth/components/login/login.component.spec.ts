@@ -17,6 +17,7 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
+
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
       providers: [SessionService],
@@ -39,4 +40,15 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+    // Tests unitaires
+    /// Vérifie que l'erreur se mette bien si es champs sont vides
+    it("should get back", () => {
+        component.form.setValue({
+            email: "",
+            password: ""
+        });
+      
+        expect(component.form.invalid).toBeTruthy();
+    });
 });
