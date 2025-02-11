@@ -11,6 +11,8 @@ import { expect } from '@jest/globals';
 import { SessionService } from 'src/app/services/session.service';
 
 import { LoginComponent } from './login.component';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -42,6 +44,19 @@ describe('LoginComponent', () => {
   });
 
     // Tests unitaires
+    /// Vérifie que par défaut le mot de passe est bien caché
+    it("should hide the password at start", () => {
+        expect(component.hide).toBeTruthy();
+    });
+
+    /// Vérifie que l'icone du mot d'aperçu de mot de passe se change bien
+    it("should toggle the password display", () => {
+        const buttonHide = fixture.debugElement.query(By.css("button[mat-icon-button]"));
+        const iconHide = fixture.debugElement.query(By.css("mat-icon"));
+        buttonHide.triggerEventHandler("click");
+        expect(iconHide).toBeTruthy();
+    });
+
     /// Vérifie que l'erreur se mette bien si es champs sont vides
     it("should get back", () => {
         component.form.setValue({
