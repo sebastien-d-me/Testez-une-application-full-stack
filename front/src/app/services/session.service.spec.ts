@@ -1,17 +1,21 @@
-import { TestBed } from '@angular/core/testing';
-import { expect } from '@jest/globals';
+import { TestBed } from "@angular/core/testing";
+import { expect } from "@jest/globals";
+import { SessionService } from "./session.service";
 
-import { SessionService } from './session.service';
 
-describe('SessionService', () => {
-  let service: SessionService;
+describe("SessionService", () => {
+    let service: SessionService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(SessionService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(SessionService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+
+
+    // Tests unitaires
+    /// Vérifie que le service est bien crée
+    it("should create", () => {
+        expect(service).toBeTruthy();
+    });
 });
