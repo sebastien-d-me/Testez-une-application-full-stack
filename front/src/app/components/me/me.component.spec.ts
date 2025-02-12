@@ -44,14 +44,14 @@ describe("MeComponent", () => {
 
 
     // Tests unitaires
-    /// Vérifie que le composant est bien crée
-    it("should create", () => {
+    /// Le composant doit bien être crée
+    it("should create the component.", () => {
         expect(component).toBeTruthy();
     });
 
     
-    /// Vérifie que ça retourne bien en arrière
-    it("should get back", () => {
+    /// La fonction doit correctement renvoyer en arrière
+    it("should send back the user.", () => {
         const checkGetBack = jest.spyOn(window.history, "back");
         component.back();
 

@@ -23,8 +23,8 @@ describe("AppComponent", () => {
 
 
     // Tests unitaires
-    /// Vérifie que l'application est bien crée
-    it("should create the app", () => {
+    /// L'application doit être crée
+    it("should create the app.", () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
         

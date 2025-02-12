@@ -38,22 +38,34 @@ describe("LoginComponent", () => {
     });
 
 
-    
+
     // Tests unitaires
-    /// Vérifie que le composant est bien crée
-    it("should create", () => {
+    /// Le composant doit bien être crée
+    it("should create the component.", () => {
         expect(component).toBeTruthy();
     });
 
 
-    /// Vérifie que par défaut le mot de passe est bien caché
-    it("should hide the password at start", () => {
+    // La variable onError doit être mise sur faux au départ
+    it("should have the onError variable to be falsy at start.", () => {
+        expect(component.onError).toBeFalsy();
+    });
+
+
+    /// Le bouton d'envoie doit être désactivé au départ
+    it("should have the submit button disabled at start.", () => {
+        expect(component.form.invalid).toBeTruthy();
+    });
+
+
+    /// Le mot de passe doit être caché par défaut
+    it("should hide the password value at start.", () => {
         expect(component.hide).toBeTruthy();
     });
 
 
-    /// Vérifie que l"icone du mot d"aperçu de mot de passe se change bien
-    it("should toggle the password display", () => {
+    /// La fonction d'aperçu du mot de passe doit fonctionner
+    it("should toggle the password display.", () => {
         const buttonHide = fixture.debugElement.query(By.css("button[mat-icon-button]"));
         const iconHide = fixture.debugElement.query(By.css("mat-icon"));
         buttonHide.triggerEventHandler("click");
@@ -62,13 +74,28 @@ describe("LoginComponent", () => {
     });
 
 
-    /// Vérifie que l"erreur se mette bien si es champs sont vides
-    it("should get back", () => {
+    /// L'état d'erreur doit se mettre sur vrai si les champs ne sont pas remplis
+    it("should trigger the error to true if all the fields aren't filled.", () => {
         component.form.setValue({
             email: "",
             password: ""
         });
+
+        component.submit();
       
         expect(component.form.invalid).toBeTruthy();
+    });
+
+
+    /// L'état d'erreur doit se mettre sur faux si les champs sont remplis
+    it("shouldn't trigger the error to true if all the fields are filled.", () => {
+        component.form.setValue({
+            email: "test@test.com",
+            password: "test123"
+        });
+
+        component.submit();
+      
+        expect(component.form.invalid).toBeFalsy();
     });
 });

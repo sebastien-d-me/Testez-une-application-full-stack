@@ -14,8 +14,8 @@ describe("SessionService", () => {
 
 
     // Tests unitaires
-    /// Vérifie que le service est bien crée
-    it("should create", () => {
+    /// Le service doit bien être crée
+    it("should create the service.", () => {
         expect(service).toBeTruthy();
     });
 });

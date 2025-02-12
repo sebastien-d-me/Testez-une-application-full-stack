@@ -21,8 +21,8 @@ describe("NotFoundComponent", () => {
     
 
     // Tests unitaires
-    /// Vérifie que le composant est bien crée
-    it("should create", () => {
+    /// Le composant doit bien être crée
+    it("should create the component.", () => {
         expect(component).toBeTruthy();
     });
 });
