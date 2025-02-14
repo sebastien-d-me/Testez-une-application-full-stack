@@ -61,4 +61,34 @@ describe("FormComponent", () => {
     it("should create the component.", () => {
         expect(component).toBeTruthy();
     });
+
+
+    /// L'état d'erreur doit se mettre sur vrai si les champs ne sont pas remplis
+    it("should trigger the error to true if all the fields aren't filled.", () => {
+        component.sessionForm?.setValue({
+            name: "",
+            date: "",
+            teacher_id: "",
+            description: ""
+        });
+
+        component.submit();
+      
+        expect(component.sessionForm?.invalid).toBeTruthy();
+    });
+
+
+    /// L'état d'erreur doit se mettre sur faux si les champs sont remplis
+    it("shouldn't trigger the error to true if all the fields are filled.", () => {
+        component.sessionForm?.setValue({
+            name: "test session",
+            date: "2025-02-13 23:45:00",
+            teacher_id: "1",
+            description: "Lorem ipsum"
+        });
+
+        component.submit();
+      
+        expect(component.sessionForm?.invalid).toBeFalsy();
+    });
 });
