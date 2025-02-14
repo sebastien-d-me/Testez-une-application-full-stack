@@ -13,6 +13,7 @@ import { LoginComponent } from "./login.component";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { of } from "rxjs";
+import { LoginRequest } from "../../interfaces/loginRequest.interface";
 
 
 describe("LoginComponent", () => {
@@ -21,16 +22,15 @@ describe("LoginComponent", () => {
     let fixture: ComponentFixture<LoginComponent>;
     let router: Router;
 
-    const mockData = {
-        "email": "john.doe@studio.com",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzM5NTQ2MTE3fQ.fNmj7-TytXWP1LrFBOCbNt0tIUUcK6KFcGXTWmtggCs"
+    const mockData: LoginRequest = {
+        "email": "test@test.com",
+        "password": "test123"
     }
 
     beforeEach(async () => {
         const mockDataAuth = {
             login: jest.fn().mockReturnValue(of(mockData))
         }
-
 
         await TestBed.configureTestingModule({
         declarations: [LoginComponent],

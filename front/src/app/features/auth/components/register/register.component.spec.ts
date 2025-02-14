@@ -8,15 +8,37 @@ import { MatInputModule } from "@angular/material/input";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { expect } from "@jest/globals";
 import { RegisterComponent } from "./register.component";
+import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { of } from "rxjs";
+import { RegisterRequest } from "../../interfaces/registerRequest.interface";
 
 
 describe("RegisterComponent", () => {
     let component: RegisterComponent;
+    let authService: AuthService;
     let fixture: ComponentFixture<RegisterComponent>;
+    let router: Router;
+
+    const mockData: RegisterRequest = {
+        "email": "test@test.com",
+        "firstName": "John",
+        "lastName": "DOE",
+        "password": "test123"
+    }
 
     beforeEach(async () => {
+        const mockDataAuth = {
+            register: jest.fn().mockReturnValue(of(mockData))
+        }
+
         await TestBed.configureTestingModule({
             declarations: [RegisterComponent],
+            providers: [
+                RegisterComponent, {
+                    provide: AuthService, useValue: mockDataAuth
+                }
+            ],
             imports: [
                 BrowserAnimationsModule,
                 HttpClientModule,
@@ -30,6 +52,8 @@ describe("RegisterComponent", () => {
 
         fixture = TestBed.createComponent(RegisterComponent);
         component = fixture.componentInstance;
+        router = TestBed.inject(Router);
+        authService = TestBed.inject(AuthService);
         fixture.detectChanges();
     });
 
@@ -75,5 +99,25 @@ describe("RegisterComponent", () => {
         component.submit();
       
         expect(component.form.invalid).toBeFalsy();
+    });
+    
+
+
+    /// Test d'intégrations
+    /// La connexion doit renvoyé à la page des sessions
+    it("should send to the sessions page after login", () => {
+        const routerNavigate = jest.spyOn(router, "navigate");
+
+        component.form.setValue({
+            email: "test@test.com",
+            firstName: "John",
+            lastName: "DOE",
+            password: "test123"
+        });
+
+            
+        component.submit();
+
+        expect(routerNavigate).toHaveBeenCalledWith(["/login"]);
     });
 });
