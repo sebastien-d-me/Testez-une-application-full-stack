@@ -1,5 +1,5 @@
 import { HttpClientModule } from "@angular/common/http";
-import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing"
+import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
 import { expect } from "@jest/globals";
 import { SessionApiService } from "./session-api.service";
