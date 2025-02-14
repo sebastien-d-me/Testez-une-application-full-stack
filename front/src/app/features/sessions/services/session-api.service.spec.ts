@@ -42,15 +42,10 @@ describe("SessionsService", () => {
         updatedAt: new Date("2024-01-13 09:00:00")
     };
 
-    const mockUser = {
-        id: 1,
-        last_name: "DOE",
-        first_name: "John"
-    }
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
+                HttpClientModule,
                 HttpClientTestingModule
             ],
             providers: [SessionApiService]
@@ -79,6 +74,7 @@ describe("SessionsService", () => {
         expect(req.request.method).toBe("GET");
         req.flush(mockData);
     });
+
 
     /// Le service doit être une requête GET et récupérer les informations sur une session
     it("should GET (request) the details of a specific session", () => {
@@ -137,6 +133,7 @@ describe("SessionsService", () => {
         expect(req.request.method).toBe("POST");
         req.flush(mockData);
     });
+
 
     /// Le service doit être une requête DELETE et mettre à jour la participation
     it("should DELETE (request) the participation of a session", () => {
