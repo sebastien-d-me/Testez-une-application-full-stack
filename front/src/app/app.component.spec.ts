@@ -50,8 +50,8 @@ describe("AppComponent", () => {
     });
 
 
-    /// La déconnexion doit passer la variable isLogged à false
-    it("should change the value of the isLogged boolean (to false) after logout", () => {
+    /// La déconnexion doit passer la variable isLogged à false et renvoyé à l'accueil
+    it("should change the value of the isLogged boolean (to false) after logout and send to home", () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
 

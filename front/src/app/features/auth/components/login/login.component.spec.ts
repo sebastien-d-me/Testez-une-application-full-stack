@@ -9,18 +9,36 @@ import { By } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
 import { expect } from "@jest/globals";
-import { SessionService } from "src/app/services/session.service";
 import { LoginComponent } from "./login.component";
+import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { of } from "rxjs";
 
 
 describe("LoginComponent", () => {
     let component: LoginComponent;
+    let authService: AuthService;
     let fixture: ComponentFixture<LoginComponent>;
+    let router: Router;
+
+    const mockData = {
+        "email": "john.doe@studio.com",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzM5NTQ2MTE3fQ.fNmj7-TytXWP1LrFBOCbNt0tIUUcK6KFcGXTWmtggCs"
+    }
 
     beforeEach(async () => {
+        const mockDataAuth = {
+            login: jest.fn().mockReturnValue(of(mockData))
+        }
+
+
         await TestBed.configureTestingModule({
         declarations: [LoginComponent],
-        providers: [SessionService],
+        providers: [
+            LoginComponent, {
+                provide: AuthService, useValue: mockDataAuth
+            }
+        ],
         imports: [
             RouterTestingModule,
             BrowserAnimationsModule,
@@ -34,6 +52,8 @@ describe("LoginComponent", () => {
 
         fixture = TestBed.createComponent(LoginComponent);
         component = fixture.componentInstance;
+        router = TestBed.inject(Router);
+        authService = TestBed.inject(AuthService);
         fixture.detectChanges();
     });
 
@@ -97,5 +117,23 @@ describe("LoginComponent", () => {
         component.submit();
       
         expect(component.form.invalid).toBeFalsy();
+    });
+
+
+
+    /// Test d'intégrations
+    /// La connexion doit renvoyé à la page des sessions
+    it("should send to the sessions page after login", () => {
+        const routerNavigate = jest.spyOn(router, "navigate");
+
+        component.form.setValue({
+            email: "john.doe@studio.com",
+            password: "test123"
+        });
+
+            
+        component.submit();
+
+        expect(routerNavigate).toHaveBeenCalledWith(["/sessions"]);
     });
 });
