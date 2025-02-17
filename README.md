@@ -48,9 +48,9 @@ Testez une application full-stack
 ---
 
 ### ✅ Tests✅
-1. Effectuez la commande : `npm run test:watch` dans le répertoire "front" (en ayant lancé le front)
-2. Effectuez la commande : `npm run e2e` dans le répertoire "front" (en ayant lancé le front)
-3. Effectuez la commande : `npm run e2e:coverage` dans le répertoire "front" (en ayant lancé le front)
-4. Effectuez la commande `mvn clean test` dans le répertoire "back" pour lancer les tests du back-end (en ayant lancé le back)
+1. Effectuez la commande : `npm run test:watch` dans le répertoire "front" (pour lancer les tests unitaires et d'intégrations et générer un rapport de couverture)
+2. Effectuez la commande : `npm run e2e` dans le répertoire "front" (pour lancer les tests end to end)
+3. Effectuez la commande : `npm run e2e:coverage` dans le répertoire "front" (pour générer un rapport de couverture end to end)
+4. Effectuez la commande `mvn clean test` dans le répertoire "back" (pour lancer les tests du back-end et générer un rapport de couverture)
 5. En cas de besoin, la page des tests du front-end, se trouve dans le répertoire "front/coverage/jest/Icov-report"
 6. En cas de besoin, la page des tests du back-end, se trouve dans le répertoire "back/target/site/jacoco"
