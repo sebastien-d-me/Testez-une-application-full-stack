@@ -1,6 +1,8 @@
 # Yoga App
 Testez une application full-stack
 
+---
+
 ### 🔄 Téléchargement 🔄
 1. Téléchargez ou clonez le projet.
 2. Nécessite les éléments suivants :
@@ -11,26 +13,31 @@ Testez une application full-stack
     - PHP
     - PHPMyAdmin
 
+---
 
 ### ⚙️ Configuration ⚙️
 1. Créez vos variables d'environnements :
-`P5_OC_API__JWT` ayant pour valeur une clé de cryptage de 256bits
-`SPRING_DATASOURCE_USERNAME` ayant pour valeur l'identifiant d'accès à votre base de données
-`SPRING_DATASOURCE_PASSWORD` ayant pour valeur le mot de passe d'accès à votre base de données
+* `P5_OC_API__JWT` ayant pour valeur une clé de cryptage de 256bits
+* `SPRING_DATASOURCE_USERNAME` ayant pour valeur l'identifiant d'accès à votre base de données
+* `SPRING_DATASOURCE_PASSWORD` ayant pour valeur le mot de passe d'accès à votre base de données
 2. Configurez le fichier `application.properties`:
-Mettez vos informations de base de données (pensez à la créer sur PhpMyAdmin)
+* Mettez vos informations de base de données (pensez à la créer sur PhpMyAdmin)
 3. Importez sur votre base de données nommé `yoga_app` le fichier SQL présent dans `ressources/sql/script.sql`
 
+---
 
 ### 🔑 Configuration 🔑
 1. Identifiants admin par défaut du front-end  :
-Nom d'utilisateur : `yoga@studio.com` 
-Mot de passe : `test!1234` 
+* Nom d'utilisateur : `yoga@studio.com` 
+* Mot de passe : `test!1234` 
 
+---
 
 ### 💻 Installation 💻
 1. Effectuez la commande : `npm install` dans le répertoire "front"
 2. Effectuez la commande : `maven clean install` dans le répertoire "back"
+
+---
 
 ### 🚀 Démarrage 🚀
 1. Effectuez la commande : `npm run start` dans le répertoire "front"
@@ -38,6 +45,7 @@ Mot de passe : `test!1234`
 3. En cas de besoin, l'URL du front est la suivante : http://localhost:4200/
 4. Pensez à changer l'adresse si votre serveur n'est pas liée à ce port
 
+---
 
 ### ✅ Tests✅
 1. Effectuez la commande : `npm run test:watch` dans le répertoire "front" (en ayant lancé le front)
