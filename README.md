@@ -14,18 +14,18 @@ Testez une application full-stack
 
 ### ⚙️ Configuration ⚙️
 1. Créez vos variables d'environnements :
-1.1 `P5_OC_API__JWT` ayant pour valeur une clé de cryptage de 256bits
-1.2 `SPRING_DATASOURCE_USERNAME` ayant pour valeur l'identifiant d'accès à votre base de données
-1.3 `SPRING_DATASOURCE_PASSWORD` ayant pour valeur le mot de passe d'accès à votre base de données
+`P5_OC_API__JWT` ayant pour valeur une clé de cryptage de 256bits
+`SPRING_DATASOURCE_USERNAME` ayant pour valeur l'identifiant d'accès à votre base de données
+`SPRING_DATASOURCE_PASSWORD` ayant pour valeur le mot de passe d'accès à votre base de données
 2. Configurez le fichier `application.properties`:
-2.1 Mettez vos informations de base de données (pensez à la créer sur PhpMyAdmin)
+Mettez vos informations de base de données (pensez à la créer sur PhpMyAdmin)
 3. Importez sur votre base de données nommé `yoga_app` le fichier SQL présent dans `ressources/sql/script.sql`
 
 
 ### 🔑 Configuration 🔑
 1. Identifiants admin par défaut du front-end  :
-1.1 Nom d'utilisateur : `yoga@studio.com` 
-1.2 Mot de passe : `test!1234` 
+Nom d'utilisateur : `yoga@studio.com` 
+Mot de passe : `test!1234` 
 
 
 ### 💻 Installation 💻
@@ -36,13 +36,13 @@ Testez une application full-stack
 1. Effectuez la commande : `npm run start` dans le répertoire "front"
 2. Effectuez la commande `mvn spring-boot:run` dans le répertoire "back"
 3. En cas de besoin, l'URL du front est la suivante : http://localhost:4200/
-3.1 Pensez à changer l'adresse si votre serveur n'est pas liée à ce port
+4. Pensez à changer l'adresse si votre serveur n'est pas liée à ce port
 
 
 ### ✅ Tests✅
 1. Effectuez la commande : `npm run test:watch` dans le répertoire "front" (en ayant lancé le front)
-1.1 Effectuez la commande : `npm run e2e` dans le répertoire "front" (en ayant lancé le front)
-1.2 Effectuez la commande : `npm run e2e:coverage` dans le répertoire "front" (en ayant lancé le front)
-3. Effectuez la commande `mvn clean test` dans le répertoire "back" pour lancer les tests du back-end (en ayant lancé le back)
-4. En cas de besoin, la page des tests du front-end, se trouve dans le répertoire "front/coverage/jest/Icov-report"
-5. En cas de besoin, la page des tests du back-end, se trouve dans le répertoire "back/target/site/jacoco"
+2. Effectuez la commande : `npm run e2e` dans le répertoire "front" (en ayant lancé le front)
+3. Effectuez la commande : `npm run e2e:coverage` dans le répertoire "front" (en ayant lancé le front)
+4. Effectuez la commande `mvn clean test` dans le répertoire "back" pour lancer les tests du back-end (en ayant lancé le back)
+5. En cas de besoin, la page des tests du front-end, se trouve dans le répertoire "front/coverage/jest/Icov-report"
+6. En cas de besoin, la page des tests du back-end, se trouve dans le répertoire "back/target/site/jacoco"
