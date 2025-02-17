@@ -63,6 +63,7 @@ describe("SessionsService", () => {
     });
 
 
+    
     // Tests Intégrations
     /// Le service doit être une requête GET et récupérer les informations toutes les sessions
     it("should GET (request) the details of all the sessions", () => {

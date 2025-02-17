@@ -6,12 +6,15 @@ import { RouterTestingModule, } from "@angular/router/testing";
 import { expect } from "@jest/globals"; 
 import { SessionService } from "../../../../services/session.service";
 import { DetailComponent } from "./detail.component";
+import { SessionApiService } from "../../services/session-api.service";
+import { of } from "rxjs";
 
 
 describe("DetailComponent", () => {
     let component: DetailComponent;
     let fixture: ComponentFixture<DetailComponent>; 
     let service: SessionService;
+    let serviceApi: SessionApiService;
 
     const mockSessionService = {
         sessionInformation: {
@@ -22,17 +25,21 @@ describe("DetailComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-        imports: [
-            RouterTestingModule,
-            HttpClientModule,
-            MatSnackBarModule,
-            ReactiveFormsModule
-        ],
-        declarations: [DetailComponent], 
-            providers: [{ provide: SessionService, useValue: mockSessionService }],
+            imports: [
+                RouterTestingModule,
+                HttpClientModule,
+                MatSnackBarModule,
+                ReactiveFormsModule
+            ],
+            declarations: [DetailComponent], 
+            providers: [
+                { provide: SessionService, useValue: mockSessionService },
+                SessionApiService
+            ],
         }).compileComponents();
         
         service = TestBed.inject(SessionService);
+        serviceApi = TestBed.inject(SessionApiService);
         fixture = TestBed.createComponent(DetailComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
@@ -52,6 +59,28 @@ describe("DetailComponent", () => {
         const checkGetBack = jest.spyOn(window.history, "back");
         component.back();
         expect(checkGetBack).toHaveBeenCalled();
+    });
+
+
+
+    // Tests Intégrations
+    /// Le service doit appeler la fonction de participation
+    it("should POST (request) the participation of a session", () => {
+        const checkParticipation = jest.spyOn(serviceApi, "participate").mockReturnValue(of(undefined));
+        
+        component.participate();
+
+        expect(checkParticipation).toHaveBeenCalled();
+    });
+
+
+    /// Le service doit appeler la fonction de désinscription de participation
+    it("should DELETE (request) the unregistration of participation of a session", () => {
+        const checkRemoveParticipation = jest.spyOn(serviceApi, "unParticipate").mockReturnValue(of(undefined));
+        
+        component.unParticipate();
+
+        expect(checkRemoveParticipation).toHaveBeenCalled();
     });
 });
 
