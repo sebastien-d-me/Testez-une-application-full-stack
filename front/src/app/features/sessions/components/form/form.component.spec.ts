@@ -13,17 +13,34 @@ import { expect } from "@jest/globals";
 import { SessionService } from "src/app/services/session.service";
 import { SessionApiService } from "../../services/session-api.service";
 import { FormComponent } from "./form.component";
+import { Router } from "@angular/router";
+import { Session } from "../../interfaces/session.interface";
+import { of } from "rxjs";
 
 
 describe("FormComponent", () => {
     let component: FormComponent;
     let fixture: ComponentFixture<FormComponent>;
+    let router: Router;
+    let serviceApi: SessionApiService;
+
 
     const mockSessionService = {
         sessionInformation: {
             admin: true
         }
     } 
+
+    const mockDataInterface: Session = {
+            id: 1,
+            name: "Nom de la session",
+            description: "Description de la session",
+            date: new Date("2024-01-14 11:00:00"),
+            teacher_id: 1,
+            users: [2],
+            createdAt: new Date("2024-01-12 17:00:00"),
+            updatedAt: new Date("2024-01-13 09:00:00")
+        };
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -50,7 +67,9 @@ describe("FormComponent", () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(FormComponent);
+        serviceApi = TestBed.inject(SessionApiService);
         component = fixture.componentInstance;
+        router = TestBed.inject(Router);
         fixture.detectChanges();
     });
 
@@ -90,5 +109,28 @@ describe("FormComponent", () => {
         component.submit();
       
         expect(component.sessionForm?.invalid).toBeFalsy();
+    });
+
+
+
+    // Tests Intégrations
+    /// Doit rediriger vers session si l'utilisateur n'est pas un admin
+    it("should redirect to the session if the user is not admin", () => {
+        const routerNavigate = jest.spyOn(router, "navigate");
+        mockSessionService.sessionInformation.admin = false;
+
+        component.ngOnInit();
+
+        expect(routerNavigate).toHaveBeenCalledWith(["/sessions"]);
+    });
+
+
+    /// Les variables doivent prendre des valeurs si l'url inclut update
+    it("should add the correct value to the variable if the url contains 'update'", () => {
+        jest.spyOn(router, "url", "get").mockReturnValue("/sessions/update/1");
+
+        component.ngOnInit();
+
+        expect(component.onUpdate).toBeTruthy();
     });
 });
