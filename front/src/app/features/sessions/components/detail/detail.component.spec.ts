@@ -8,6 +8,7 @@ import { SessionService } from "../../../../services/session.service";
 import { DetailComponent } from "./detail.component";
 import { SessionApiService } from "../../services/session-api.service";
 import { of } from "rxjs";
+import { Router } from "@angular/router";
 
 
 describe("DetailComponent", () => {
@@ -15,6 +16,7 @@ describe("DetailComponent", () => {
     let fixture: ComponentFixture<DetailComponent>; 
     let service: SessionService;
     let serviceApi: SessionApiService;
+    let router: Router;
 
     const mockSessionService = {
         sessionInformation: {
@@ -42,6 +44,7 @@ describe("DetailComponent", () => {
         serviceApi = TestBed.inject(SessionApiService);
         fixture = TestBed.createComponent(DetailComponent);
         component = fixture.componentInstance;
+        router = TestBed.inject(Router);
         fixture.detectChanges();
     });
 
@@ -64,10 +67,20 @@ describe("DetailComponent", () => {
 
 
     // Tests Intégrations
+    /// La session doit être supprimé
+    it("should delete the session", () => {
+        const checkDelete = jest.spyOn(serviceApi, "delete").mockReturnValue(of({}));
+
+        component.delete();
+
+        expect(checkDelete).toHaveBeenCalledWith(null);
+    });
+
+
     /// Le service doit appeler la fonction de participation
-    it("should POST (request) the participation of a session", () => {
+    it("should add the participation of a session", () => {
         const checkParticipation = jest.spyOn(serviceApi, "participate").mockReturnValue(of(undefined));
-        
+
         component.participate();
 
         expect(checkParticipation).toHaveBeenCalled();
@@ -75,7 +88,7 @@ describe("DetailComponent", () => {
 
 
     /// Le service doit appeler la fonction de désinscription de participation
-    it("should DELETE (request) the unregistration of participation of a session", () => {
+    it("should remove the unregistration of participation of a session", () => {
         const checkRemoveParticipation = jest.spyOn(serviceApi, "unParticipate").mockReturnValue(of(undefined));
         
         component.unParticipate();
