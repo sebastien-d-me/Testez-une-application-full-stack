@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './features/auth/services/auth.service';
@@ -14,7 +14,7 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private sessionService: SessionService) {
+    private sessionService: SessionService, private ngZone: NgZone) {
   }
 
   public $isLogged(): Observable<boolean> {
@@ -23,6 +23,8 @@ export class AppComponent {
 
   public logout(): void {
     this.sessionService.logOut();
+    this.ngZone.run(() => {
     this.router.navigate([''])
+    });
   }
 }

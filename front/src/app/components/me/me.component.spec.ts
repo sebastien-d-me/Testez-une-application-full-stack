@@ -74,6 +74,6 @@ describe("MeComponent", () => {
     
         component.delete();
     
-        expect(checkDelete).toHaveBeenCalledWith(1);
+        expect(checkDelete).toHaveBeenCalledWith("1");
     });
 });
