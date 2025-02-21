@@ -10,7 +10,7 @@ describe("SessionsService", () => {
     let service: SessionApiService;
     let httpMock: HttpTestingController;
 
-    const mockData = [
+    const mockSessions = [
         {
             id: "1",
             name: "Nom de la session",
@@ -31,7 +31,7 @@ describe("SessionsService", () => {
         }
     ];
 
-    const mockDataInterface: Session = {
+    const mockSessionInterface: Session = {
         id: 1,
         name: "Nom de la session",
         description: "Description de la session",
@@ -50,47 +50,45 @@ describe("SessionsService", () => {
             ],
             providers: [SessionApiService]
         });
+
         service = TestBed.inject(SessionApiService);
         httpMock = TestBed.inject(HttpTestingController);
     });
 
 
-
+    /** Tests **/
     // Tests unitaires
-    /// Le service doit bien être crée
-    it("should create the service.", () => {
+    /// Vérifie que le service existe bien
+    it("should check that the service exist.", () => {
         expect(service).toBeTruthy();
     });
 
 
-    
-    // Tests Intégrations
-    /// Le service doit être une requête GET et récupérer les informations toutes les sessions
-    it("should GET (request) the details of all the sessions", () => {
+    // Tests intégrations
+    /// Le service doit être une requête GET et récupérer les informations de toutes les sessions
+    it("should GET (request) the details of all the sessions.", () => {
         service.all().subscribe(sessionData => {
-            expect(sessionData).toEqual(mockData);
+            expect(sessionData).toEqual(mockSessions);
         });
 
         const req = httpMock.expectOne("api/session");
         expect(req.request.method).toBe("GET");
-        req.flush(mockData);
+        req.flush(mockSessions);
     });
 
-
-    /// Le service doit être une requête GET et récupérer les informations sur une session
-    it("should GET (request) the details of a specific session", () => {
+    /// Le service doit être une requête GET et récupérer les informations d'une session
+    it("should GET (request) the details of a specific session.", () => {
         service.detail("1").subscribe(sessionData => {
-            expect(sessionData).toEqual(mockData);
+            expect(sessionData).toEqual(mockSessions);
         });
 
         const req = httpMock.expectOne("api/session/1");
         expect(req.request.method).toBe("GET");
-        req.flush(mockData);
+        req.flush(mockSessions);
     });
 
-
     /// Le service doit être une requête DELETE et supprimer la session
-    it("should DELETE (request) a session", () => {
+    it("should DELETE (request) a session.", () => {
         service.delete("1").subscribe(sessionData => {
             expect(sessionData).toBeUndefined();
         });
@@ -99,30 +97,27 @@ describe("SessionsService", () => {
         expect(req.request.method).toBe("DELETE");
     });
 
-
     /// Le service doit être une requête CREATE et crée la session
     it("should CREATE (request) a session", () => {
-        service.create(mockDataInterface).subscribe(sessionData => {
-            expect(sessionData).toEqual(mockData);
+        service.create(mockSessionInterface).subscribe(sessionData => {
+            expect(sessionData).toEqual(mockSessions);
         });
 
         const req = httpMock.expectOne("api/session");
         expect(req.request.method).toBe("POST");
-        req.flush(mockData);
+        req.flush(mockSessions);
     });
-
 
     /// Le service doit être une requête PUT et mettre à jour la session
     it("should PUT (request) the update of a session", () => {
-        service.update("1", mockDataInterface).subscribe(sessionData => {
-            expect(sessionData).toEqual(mockData);
+        service.update("1", mockSessionInterface).subscribe(sessionData => {
+            expect(sessionData).toEqual(mockSessions);
         });
 
         const req = httpMock.expectOne("api/session/1");
         expect(req.request.method).toBe("PUT");
-        req.flush(mockData);
+        req.flush(mockSessions);
     });
-
 
     /// Le service doit être une requête POST et mettre à jour la participation
     it("should POST (request) the participation of a session", () => {
@@ -132,9 +127,8 @@ describe("SessionsService", () => {
 
         const req = httpMock.expectOne("api/session/1/participate/2");
         expect(req.request.method).toBe("POST");
-        req.flush(mockData);
+        req.flush(mockSessions);
     });
-
 
     /// Le service doit être une requête DELETE et mettre à jour la participation
     it("should DELETE (request) the participation of a session", () => {
@@ -145,7 +139,6 @@ describe("SessionsService", () => {
         const req = httpMock.expectOne("api/session/1/participate/2");
         expect(req.request.method).toBe("DELETE");
     });
-
 
 
     // Fin des tests 

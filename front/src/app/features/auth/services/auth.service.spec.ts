@@ -1,7 +1,6 @@
 import { HttpClientModule } from "@angular/common/http";
 import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { expect } from "@jest/globals";
 import { AuthService } from "./auth.service";
 import { RegisterRequest } from "../interfaces/registerRequest.interface";
 import { LoginRequest } from "../interfaces/loginRequest.interface";
@@ -11,14 +10,14 @@ describe("SessionsService", () => {
     let authService: AuthService;
     let httpMock: HttpTestingController;
 
-    const mockDataRegister: RegisterRequest = {
+    const mockRegister: RegisterRequest = {
         "email": "test@test.com",
         "firstName": "John",
         "lastName": "DOE",
         "password": "test123"
     }
 
-    const mockDataLogin: LoginRequest = {
+    const mockLogin: LoginRequest = {
         "email": "test@test.com",
         "password": "test123"
     }
@@ -31,43 +30,43 @@ describe("SessionsService", () => {
             ],
             providers: [AuthService]
         });
+
         authService = TestBed.inject(AuthService);
         httpMock = TestBed.inject(HttpTestingController);
     });
 
 
-
+    /** Tests **/
     // Tests unitaires
-    /// Le service doit bien être crée
-    it("should create the service.", () => {
+    /// Vérifie que le service existe bien
+    it("should check that the service exist.", () => {
         expect(authService).toBeTruthy();
     });
 
 
-    // Tests Intégrations
-    /// Le service doit être une requête POST et inscrire l'utilsiateur
-    it("should POST (request) the register of new user", () => {
-        authService.register(mockDataRegister).subscribe(sessionData => {
-            expect(sessionData).toEqual(mockDataRegister);
+    // Tests intégrations
+    /// Le service doit être une requête POST pour inscrire l'utilsiateur
+    it("should check that it is a POST (request) to register a new user.", () => {
+        authService.register(mockRegister).subscribe(sessionData => {
+            expect(sessionData).toEqual(mockRegister);
         });
 
         const req = httpMock.expectOne("api/auth/register");
         expect(req.request.method).toBe("POST");
-        req.flush(mockDataRegister);
+        req.flush(mockRegister);
     });
 
 
-    /// Le service doit être une requête GET et connecter l'utilisateur
-    it("should POST (request) the login of the user", () => {
-        authService.login(mockDataRegister).subscribe(sessionData => {
-            expect(sessionData).toEqual(mockDataLogin);
+    /// Le service doit être une requête POST pour connecter l'utilisateur
+    it("should check that it is a POST (request) to login the user.", () => {
+        authService.login(mockLogin).subscribe(sessionData => {
+            expect(sessionData).toEqual(mockLogin);
         });
 
         const req = httpMock.expectOne("api/auth/login");
         expect(req.request.method).toBe("POST");
-        req.flush(mockDataLogin);
+        req.flush(mockLogin);
     });
-
 
 
     // Fin des tests 

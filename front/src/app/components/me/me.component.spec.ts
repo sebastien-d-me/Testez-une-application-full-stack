@@ -57,7 +57,7 @@ describe("MeComponent", () => {
     });
 
     /// Vérifie que le retour en arrière est bien fonctionnel
-    it("should send the user to the previous page", () => {
+    it("should check that the user is sent to the previous page.", () => {
         const checkPreviousPage = jest.spyOn(window.history, "back");
         component.back();
 
@@ -65,9 +65,9 @@ describe("MeComponent", () => {
     })
 
 
-    // Tests Intégrations
+    // Tests intégrations
     /// Vérifie que la fonction de suppression d'un utilisateur est appelé avec l'ID
-    it("should call the delete user function with his ID", () => {
+    it("should check that the delete user function with his ID.", () => {
         const checkDelete = jest.spyOn(userService, "delete").mockReturnValue(of({}));
         component.delete();
 

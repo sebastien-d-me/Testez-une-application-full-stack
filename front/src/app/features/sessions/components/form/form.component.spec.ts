@@ -9,18 +9,15 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
-import { expect } from "@jest/globals";
 import { SessionService } from "src/app/services/session.service";
 import { SessionApiService } from "../../services/session-api.service";
 import { FormComponent } from "./form.component";
 import { Router } from "@angular/router";
-import { Session } from "../../interfaces/session.interface";
-import { of } from "rxjs";
 
 
 describe("FormComponent", () => {
-    let component: FormComponent;
     let fixture: ComponentFixture<FormComponent>;
+    let component: FormComponent;
     let router: Router;
     let serviceApi: SessionApiService;
 
@@ -30,17 +27,6 @@ describe("FormComponent", () => {
             admin: true
         }
     } 
-
-    const mockDataInterface: Session = {
-            id: 1,
-            name: "Nom de la session",
-            description: "Description de la session",
-            date: new Date("2024-01-14 11:00:00"),
-            teacher_id: 1,
-            users: [2],
-            createdAt: new Date("2024-01-12 17:00:00"),
-            updatedAt: new Date("2024-01-13 09:00:00")
-        };
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -67,23 +53,22 @@ describe("FormComponent", () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(FormComponent);
-        serviceApi = TestBed.inject(SessionApiService);
+        fixture.detectChanges();
         component = fixture.componentInstance;
         router = TestBed.inject(Router);
-        fixture.detectChanges();
+        serviceApi = TestBed.inject(SessionApiService);        
     });
 
 
-
+    /** Tests **/
     // Tests unitaires
-    /// Le composant doit bien être crée
-    it("should create the component.", () => {
+    /// Vérifie que le composant existe bien
+    it("should check that the component exist.", () => {
         expect(component).toBeTruthy();
     });
 
-
-    /// L'état d'erreur doit se mettre sur vrai si les champs ne sont pas remplis
-    it("should trigger the error to true if all the fields aren't filled.", () => {
+    /// L'état d'erreur doit se mettre sur vrai si au moins un champ est vide
+    it("should check that the error is triggered if at least one field is empty.", () => {
         component.sessionForm?.setValue({
             name: "",
             date: "",
@@ -97,8 +82,8 @@ describe("FormComponent", () => {
     });
 
 
-    /// L'état d'erreur doit se mettre sur faux si les champs sont remplis
-    it("shouldn't trigger the error to true if all the fields are filled.", () => {
+    /// L'état d'erreur doit se mettre sur faux si aucun n'est vide
+    it("should check that the erorr is not triggered if all the fields are filled.", () => {
         component.sessionForm?.setValue({
             name: "test session",
             date: "2025-02-13 23:45:00",
@@ -112,10 +97,9 @@ describe("FormComponent", () => {
     });
 
 
-
-    // Tests Intégrations
-    /// Doit rediriger vers session si l'utilisateur n'est pas un admin
-    it("should redirect to the session if the user is not admin", () => {
+    // Tests intégrations
+    /// Vérifie que l'utilisateur est bien redirigé vers session s'il n'est pas un admin
+    it("should check that the user if redirected to the session page if he's not a admin.", () => {
         const routerNavigate = jest.spyOn(router, "navigate");
         mockSessionService.sessionInformation.admin = false;
 
@@ -124,9 +108,8 @@ describe("FormComponent", () => {
         expect(routerNavigate).toHaveBeenCalledWith(["/sessions"]);
     });
 
-
-    /// Les variables doivent prendre des valeurs si l'url inclut update
-    it("should add the correct value to the variable if the url contains 'update'", () => {
+    /// Vérifie que onUpdate passe à true si l'url contient "update"
+    it("should check that onUpdate value is true if the URL contain 'update'.", () => {
         jest.spyOn(router, "url", "get").mockReturnValue("/sessions/update/1");
 
         component.ngOnInit();

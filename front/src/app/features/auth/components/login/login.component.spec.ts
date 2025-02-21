@@ -17,19 +17,19 @@ import { LoginRequest } from "../../interfaces/loginRequest.interface";
 
 
 describe("LoginComponent", () => {
-    let component: LoginComponent;
-    let authService: AuthService;
     let fixture: ComponentFixture<LoginComponent>;
+    let component: LoginComponent;
     let router: Router;
+    let authService: AuthService;
 
-    const mockData: LoginRequest = {
+    const mockLogin: LoginRequest = {
         "email": "test@test.com",
         "password": "test123"
     }
 
     beforeEach(async () => {
         const mockDataAuth = {
-            login: jest.fn().mockReturnValue(of(mockData))
+            login: jest.fn().mockReturnValue(of(mockLogin))
         }
 
         await TestBed.configureTestingModule({
@@ -51,51 +51,36 @@ describe("LoginComponent", () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(LoginComponent);
+        fixture.detectChanges();
         component = fixture.componentInstance;
         router = TestBed.inject(Router);
         authService = TestBed.inject(AuthService);
-        fixture.detectChanges();
     });
 
-
-
+    /** Tests **/
     // Tests unitaires
-    /// Le composant doit bien être crée
-    it("should create the component.", () => {
+    /// Vérifie que le composant existe bien
+    it("should check that the component exist.", () => {
         expect(component).toBeTruthy();
     });
 
-
-    // La variable onError doit être mise sur faux au départ
-    it("should have the onError variable to be falsy at start.", () => {
+    /// Vérifie que par défaut, la valeur d'onError est fausse
+    it("should check if onError variable value is false at start.", () => {
         expect(component.onError).toBeFalsy();
     });
 
-
-    /// Le bouton d'envoie doit être désactivé au départ
-    it("should have the submit button disabled at start.", () => {
+    /// Vérifie que Le bouton d'envoi est désactivé au départ
+    it("should check if the submit button is disabled at start.", () => {
         expect(component.form.invalid).toBeTruthy();
     });
 
-
-    /// Le mot de passe doit être caché par défaut
-    it("should hide the password value at start.", () => {
+    /// Vérifie que le mot de passe est caché au départ
+    it("should check if the passowrd value is hidden at start.", () => {
         expect(component.hide).toBeTruthy();
     });
 
-
-    /// La fonction d'aperçu du mot de passe doit fonctionner
-    it("should toggle the password display.", () => {
-        const buttonHide = fixture.debugElement.query(By.css("button[mat-icon-button]"));
-        const iconHide = fixture.debugElement.query(By.css("mat-icon"));
-        buttonHide.triggerEventHandler("click");
-        
-        expect(iconHide).toBeTruthy();
-    });
-
-
-    /// L'état d'erreur doit se mettre sur vrai si les champs ne sont pas remplis
-    it("should trigger the error to true if all the fields aren't filled.", () => {
+    /// Vérifie l'état d'erreur (doit être vrai) si tous les champs ne sont pas remplis
+    it("should check if the error variable value is true if all the fields are not filled.", () => {
         component.form.setValue({
             email: "",
             password: ""
@@ -106,9 +91,8 @@ describe("LoginComponent", () => {
         expect(component.form.invalid).toBeTruthy();
     });
 
-
-    /// L'état d'erreur doit se mettre sur faux si les champs sont remplis
-    it("shouldn't trigger the error to true if all the fields are filled.", () => {
+    /// Vérifie l'état d'erreur (doit être faux) si tous les champs ne sont pas remplis
+    it("shouldn't trigger the error to false if all the fields are filled.", () => {
         component.form.setValue({
             email: "test@test.com",
             password: "test123"
@@ -120,10 +104,18 @@ describe("LoginComponent", () => {
     });
 
 
+    // Test d'intégrations
+    /// Vérifie le bon fonctionnement de l'aperçu du mot de passe
+    it("should toggle the password display.", () => {
+        const buttonHide = fixture.debugElement.query(By.css("button[mat-icon-button]"));
+        const iconHide = fixture.debugElement.query(By.css("mat-icon"));
+        buttonHide.triggerEventHandler("click");
+        
+        expect(iconHide).toBeTruthy();
+    });
 
-    /// Test d'intégrations
-    /// La connexion doit renvoyé à la page des sessions
-    it("should send to the sessions page after login", () => {
+    /// Vérifie qu'après la connexion, on est renvoyé sur la page des sessions
+    it("should check that the user is sent to the sessions page after login.", () => {
         const routerNavigate = jest.spyOn(router, "navigate");
 
         component.form.setValue({
@@ -131,7 +123,6 @@ describe("LoginComponent", () => {
             password: "test123"
         });
 
-            
         component.submit();
 
         expect(routerNavigate).toHaveBeenCalledWith(["/sessions"]);

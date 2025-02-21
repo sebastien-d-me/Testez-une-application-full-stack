@@ -1,16 +1,12 @@
-import { HttpClientModule } from "@angular/common/http";
-import { HttpTestingController, HttpClientTestingModule } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { expect } from "@jest/globals";
 import { SessionService } from "./session.service";
 import { SessionInformation } from "../interfaces/sessionInformation.interface";
 
 
 describe("SessionService", () => {
     let service: SessionService;
-    let httpMock: HttpTestingController;
 
-    const mockData: SessionInformation = {
+    const mockSessionInformation: SessionInformation = {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzM5NTQ2MTE3fQ.fNmj7-TytXWP1LrFBOCbNt0tIUUcK6KFcGXTWmtggCs",
         "type": "Bearer",
         "id": 1,
@@ -22,63 +18,51 @@ describe("SessionService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                HttpClientModule,
-                HttpClientTestingModule
-            ],
             providers: [SessionService]
         });
+
         service = TestBed.inject(SessionService);
-        httpMock = TestBed.inject(HttpTestingController);
     });
 
 
-
+    /** Tests **/
     // Tests unitaires
-    /// Le service doit bien être crée
-    it("should create the service.", () => {
+    /// Vérifie que le service existe bien
+    it("should check that the service exist.", () => {
         expect(service).toBeTruthy();
     });
 
-
-    /// L'utilisateur ne doit pas être connecté au début
-    it("should not have the isLogged true at start", () => {
+    /// Vérifie que la variable isLogged est fausse au départ
+    it("should check that the isLogged variable is false at start.", () => {
         expect(service.isLogged).toBeFalsy();
     });
 
 
-
-    /// Tests d'intégrations
-    // L'obversable doit bien nous donner la valeur du booléen isLogged true si on se connecte par exemple
-    it("should return isLogged value to the app", () => {
-        service.logIn(mockData);
+    // Tests intégrations
+    /// Vérifie que l'observable renvoie la valeur (modifiée) du booléen isLogged à true si on se connecte
+    it("should check that the observable return isLogged (to true) when we login", () => {
+        service.logIn(mockSessionInformation);
 
         service.$isLogged().subscribe(sessionIsLogged => {
             expect(sessionIsLogged).toBeTruthy();
         });
     });
 
-
-    /// La connexion doit passer la variable isLogged à true
-    it("should change the value of the isLogged boolean (to true) after login", () => {
-        service.logIn(mockData);
+    /// Vérifie que la variable isLogged passe bien à true en cas de connexion
+    it("should check that the value of isLogged change to true when we login", () => {
+        service.logIn(mockSessionInformation);
 
         expect(service.isLogged).toBeTruthy();
     });
 
+    /// Vérifie que la variable isLogged passe bien à false en cas de déconnexion
+    it("should check that the value of isLogged change to false when we logout", () => {
+        service.logIn(mockSessionInformation);
 
-    /// La déconnexion doit passer la variable isLogged à false
-    it("should change the value of the isLogged boolean (to false) after logout", () => {
+        expect(service.isLogged).toBeTruthy();
+        
         service.logOut();
 
         expect(service.isLogged).toBeFalsy();
-    });
-    
-
-
-
-    // Fin des tests 
-    afterEach(() => {
-        httpMock.verify();
     });
 });
