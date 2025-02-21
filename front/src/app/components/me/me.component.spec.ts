@@ -12,68 +12,65 @@ import { UserService } from "src/app/services/user.service";
 
 
 describe("MeComponent", () => {
-    let component: MeComponent;
     let fixture: ComponentFixture<MeComponent>;
+    let component: MeComponent;
     let userService: UserService;
 
     const mockSessionService = {
         sessionInformation: {
-            admin: true,
             id: 1
         }
-    }
+    };
+
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [MeComponent],
             imports: [
-                MatSnackBarModule,
                 HttpClientModule,
                 MatCardModule,
                 MatFormFieldModule,
                 MatIconModule,
-                MatInputModule
+                MatInputModule,
+                MatSnackBarModule
             ],
-            providers: [{ 
-                provide: SessionService, 
-                useValue: mockSessionService 
-            },
-            UserService
-        ],
+            providers: [
+                { 
+                    provide: SessionService, 
+                    useValue: mockSessionService 
+                }, 
+                UserService
+            ],
         }).compileComponents();
 
-        userService = TestBed.inject(UserService);
         fixture = TestBed.createComponent(MeComponent);
-        component = fixture.componentInstance;
         fixture.detectChanges();
+        component = fixture.componentInstance;
+        userService = TestBed.inject(UserService);
     });
 
 
-
+    /** Tests **/
     // Tests unitaires
-    /// Le composant doit bien être crée
-    it("should create the component.", () => {
+    /// Vérifie que le composant existe bien
+    it("should check that the component exist.", () => {
         expect(component).toBeTruthy();
     });
 
-    
-    /// La fonction doit correctement renvoyer en arrière
-    it("should send back the user.", () => {
-        const checkGetBack = jest.spyOn(window.history, "back");
+    /// Vérifie que le retour en arrière est bien fonctionnel
+    it("should send the user to the previous page", () => {
+        const checkPreviousPage = jest.spyOn(window.history, "back");
         component.back();
 
-        expect(checkGetBack).toHaveBeenCalled();
-    });
-
-
+        expect(checkPreviousPage).toHaveBeenCalled();
+    })
 
 
     // Tests Intégrations
-    /// L'user doit être supprimé
-    it("should call the delete user function", () => {
+    /// Vérifie que la fonction de suppression d'un utilisateur est appelé avec l'ID
+    it("should call the delete user function with his ID", () => {
         const checkDelete = jest.spyOn(userService, "delete").mockReturnValue(of({}));
-    
         component.delete();
-    
+
         expect(checkDelete).toHaveBeenCalledWith("1");
     });
 });
