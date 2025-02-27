@@ -9,3 +9,6 @@ import "./src/app/features/auth/components/login.cy";
 // SRC/APP/FEATURES/AUTH/SESSIONS/COMPONENTS
 import "./src/app/features/auth/sessions/components/form.cy";
 import "./src/app/features/auth/sessions/components/list.cy";
+
+// SRC/APP/SERVICES
+import "./src/app/services/session.cy";
