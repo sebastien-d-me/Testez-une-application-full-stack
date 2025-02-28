@@ -1,9 +1,7 @@
 // SRC/APP/FEATURES/AUTH/COMPONENTS - REGISTER
 describe("Register component", () => {
-    // Test de l'inscription
-    it("Should register successfull", () => {
-        cy.visit("/register");
-    
+    // Requêtes
+    before(() => {
         cy.intercept("POST", "/api/auth/register", {
             body: {
                 lastName: "DOE",
@@ -12,7 +10,14 @@ describe("Register component", () => {
                 password: "test123!"
             }
         });
+    });
+
+
     
+    // Test de l'inscription
+    it("Should register successfull", () => {
+        cy.visit("/register");
+        
         cy.get("input[formControlName=firstName]").type("DOE");
         cy.get("input[formControlName=lastName]").type("John");
         cy.get("input[formControlName=email]").type("john.doe@test.com");

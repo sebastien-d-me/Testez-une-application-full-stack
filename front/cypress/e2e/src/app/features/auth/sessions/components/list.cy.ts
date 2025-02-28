@@ -1,13 +1,13 @@
-describe("List spec", () => {
-    it("List all the session", () => {
-        cy.visit("/login");
-
+// SRC/APP/FEATURES/AUTH/SESSIONS/COMPONENT - LIST
+describe("List component", () => {
+    // Requêtes
+    before(() => {
         cy.intercept("POST", "/api/auth/login", {
             body: {
                 id: 1,
                 email: "yoga@studio.com",
-                firstName: "Yoga",
                 lastName: "Studio",
+                firstName: "Yoga",
                 admin: true
             }
         });
@@ -35,6 +35,13 @@ describe("List spec", () => {
                 description: "Lorem ipsum"
             }]
         });
+    });
+
+    
+
+    // Test de la liste des sessions
+    it("List all the session", () => {
+        cy.visit("/login");
 
         cy.get("input[formControlName=email]").type("yoga@studio.com");
         cy.get("input[formControlName=password]").type(`${"test!1234"}{enter}{enter}`);

@@ -1,7 +1,7 @@
-describe("Form spec", () => {
-    it("Create a session", () => {
-        cy.visit("/login");
-
+// SRC/APP/FEATURES/AUTH/SESSIONS/COMPONENT - FORM
+describe("Form component", () => {
+    // Requêtes
+    beforeEach(() => {
         cy.intercept("POST", "/api/auth/login", {
             body: {
                 id: 1,
@@ -9,16 +9,6 @@ describe("Form spec", () => {
                 firstName: "Yoga",
                 lastName: "Studio",
                 admin: true
-            }
-        });
-
-        cy.intercept("POST", "/api/session", {
-            body: {
-                name: "Session 1",
-                date: "2025-02-26",
-                teacher_id: 1,
-                users: null,
-                description: "Lorem ipsum"
             }
         });
 
@@ -44,6 +34,16 @@ describe("Form spec", () => {
             ]
         });
 
+        cy.intercept("POST", "/api/session", {
+            body: {
+                name: "Session 1",
+                date: "2025-02-26",
+                teacher_id: 1,
+                users: null,
+                description: "Lorem ipsum"
+            }
+        });
+
         cy.intercept({
             method: "GET",
             url: "/api/session"
@@ -58,6 +58,28 @@ describe("Form spec", () => {
                 description: "Lorem ipsum"
             }]
         });
+
+        cy.intercept({
+            method: "GET",
+            url: "/api/session/1"
+        }, {
+            statusCode: 200,
+            body: {
+                id: 1,
+                name: "Session 1",
+                date: "2025-02-26",
+                teacher_id: 1,
+                users: null,
+                description: "Lorem ipsum"
+            }
+        });
+    });
+
+    
+    
+    // Test de création d'une session
+    it("Create a session", () => {
+        cy.visit("/login");
 
         cy.get("input[formControlName=email]").type("yoga@studio.com");
         cy.get("input[formControlName=password]").type(`${"test!1234"}{enter}{enter}`);
@@ -76,44 +98,10 @@ describe("Form spec", () => {
         cy.url().should("include", "/sessions");
     });
 
+
+
+    // Test de mise à jour d'une session
     it("Update a session", () => {
-        cy.intercept({
-            method: "GET",
-            url: "/api/teacher"
-        }, {
-            statusCode: 200,
-            body: [
-                {
-                    id: 1,
-                    lastName: "DELAHAYE",
-                    firstName: "Margot",
-                    createdAt: "2025-02-06T16:55:49",
-                    updatedAt: "2025-02-06T16:55:49"
-                }, {
-                    id: 2,
-                    lastName: "THIERCELIN",
-                    firstName: "Hélène",
-                    createdAt: "2025-02-06T16:55:49",
-                    updatedAt: "2025-02-06T16:55:49"
-                }
-            ]
-        });
-
-        cy.intercept({
-            method: "GET",
-            url: "/api/session/1"
-        }, {
-            statusCode: 200,
-            body: {
-                id: 1,
-                name: "Session 1",
-                date: "2025-02-26",
-                teacher_id: 1,
-                users: null,
-                description: "Lorem ipsum"
-            }
-        });
-
         cy.intercept({
             method: "PUT",
             url: "/api/session/1",
@@ -127,21 +115,6 @@ describe("Form spec", () => {
                 users: null,
                 description: "Lorem ipsum 2"
             }
-        });
-
-        cy.intercept({
-            method: "GET",
-            url: "/api/session"
-        }, {
-            statusCode: 200,
-            body: [{
-                id: 1,
-                name: "Session 2",
-                date: "2025-02-27",
-                teacher_id: 2,
-                users: null,
-                description: "Lorem ipsum 2"
-            }]
         });
 
         cy.url().should("include", "/sessions");

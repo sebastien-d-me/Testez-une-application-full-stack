@@ -1,9 +1,7 @@
 // SRC/APP/FEATURES/AUTH/COMPONENTS - LOGIN
 describe("Login component", () => {
-    // Test de la connexion
-    it("Should login successfull", () => {
-        cy.visit("/login");
-
+    // Requêtes
+    before(() => {
         cy.intercept("POST", "/api/auth/login", {
             body: {
                 id: 1,
@@ -13,6 +11,13 @@ describe("Login component", () => {
                 admin: true
             }
         });
+    });
+
+
+    
+    // Test de la connexion
+    it("Should login successfull", () => {
+        cy.visit("/login");
 
         cy.get("input[formControlName=email]").type("yoga@studio.com");
         cy.get("input[formControlName=password]").type(`${"test!1234"}{enter}{enter}`);

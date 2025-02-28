@@ -1,21 +1,23 @@
-describe("Logout spec", () => {
-    it("Logout successfull", () => {
-        cy.visit("/login");
-
+// SRC/APP/SERVICES - SESSION
+describe("Session service", () => {
+    // Requêtes
+    before(() => {
         cy.intercept("POST", "/api/auth/login", {
             body: {
                 id: 1,
                 email: "yoga@studio.com",
-                firstName: "Yoga",
                 lastName: "Studio",
+                firstName: "Yoga",
                 admin: true
             }
         });
+    });
 
-        cy.intercept({
-            method: "GET",
-            url: "/api/session"
-        }, []).as("session");
+
+    
+    // Test de déconnexion
+    it("Should logout successfull", () => {
+        cy.visit("/login");
 
         cy.get("input[formControlName=email]").type("yoga@studio.com");
         cy.get("input[formControlName=password]").type(`${"test!1234"}{enter}{enter}`);
