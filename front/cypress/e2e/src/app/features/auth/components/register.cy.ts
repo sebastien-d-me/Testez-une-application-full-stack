@@ -1,5 +1,7 @@
-describe("Register spec", () => {
-    it("Register successfull", () => {
+// SRC/APP/FEATURES/AUTH/COMPONENTS - REGISTER
+describe("Register component", () => {
+    // Test de l'inscription
+    it("Should register successfull", () => {
         cy.visit("/register");
     
         cy.intercept("POST", "/api/auth/register", {
@@ -10,11 +12,6 @@ describe("Register spec", () => {
                 password: "test123!"
             }
         });
-    
-        cy.intercept({
-            method: "GET",
-            url: "/api/login",
-        }, []).as("login");
     
         cy.get("input[formControlName=firstName]").type("DOE");
         cy.get("input[formControlName=lastName]").type("John");

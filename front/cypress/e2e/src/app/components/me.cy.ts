@@ -4,19 +4,18 @@ describe("Me component", () => {
     it("Should get back to the previous page", () => {
         cy.intercept("POST", "/api/auth/login", {
             body: {
-                id: 2,
-                email: "john.doe@test.com",
-                lastName: "DOE",
-                firstName: "John",
-                admin: false,
-                createdAt: new Date("2025-02-27 12:00:00"),
+                id: 1,
+                email: "yoga@studio.com",
+                lastName: "Studio",
+                firstName: "Yoga",
+                admin: true
             }
         });
 
         cy.visit("/login");
         
-        cy.get("input[formControlName=email]").type("john.doe@test.com");
-        cy.get("input[formControlName=password]").type(`${"test123!"}{enter}{enter}`);
+        cy.get("input[formControlName=email]").type("yoga@studio.com");
+        cy.get("input[formControlName=password]").type(`${"test!1234"}{enter}{enter}`);
 
         cy.get("span").contains("Account").click();    
         cy.get("button.mat-focus-indicator.mat-icon-button.mat-button-base").click();
@@ -25,16 +24,16 @@ describe("Me component", () => {
     });
 
 
-    
+
     // Test de récupération des infos d'un utilisateur spécfiique
-    it("Show the user details", () => {
-        cy.intercept("GET", "/api/user/2", {
+    it("Should show the details of a specific user", () => {
+        cy.intercept("GET", "/api/user/1", {
             body: {
-                id: 2,
-                email: "john.doe@test.com",
-                lastName: "DOE",
-                firstName: "John",
-                admin: false,
+                id: 1,
+                email: "yoga@studio.com",
+                lastName: "Studio",
+                firstName: "Yoga",
+                admin: true,
                 createdAt: new Date("2025-02-27 12:00:00"),
                 updatedAt: new Date("2025-02-28 13:00:00")
             }
@@ -44,7 +43,7 @@ describe("Me component", () => {
         
         cy.wait("@meDetails");
 
-        cy.get("p").contains("Name:").should("be.visible").and("contain", "John DOE");
-        cy.get("p").contains("Email:").should("be.visible").and("contain", "john.doe@test.com");
+        cy.get("p").contains("Name:").should("be.visible").and("contain", "Yoga STUDIO");
+        cy.get("p").contains("Email:").should("be.visible").and("contain", "yoga@studio.com");
     });
 });
