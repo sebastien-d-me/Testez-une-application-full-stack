@@ -18,11 +18,15 @@ public class TeacherServiceTest {
 
     @Mock
     private TeacherRepository teachRepository;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+        createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
+        updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
     }
 
     
@@ -30,8 +34,6 @@ public class TeacherServiceTest {
     /// Test - Find all teachers
     public void testFindAll() {
         // Arrange
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
         LocalDateTime createdAtSecondary = LocalDateTime.parse("2025-04-03T22:30:00");
         LocalDateTime updatedAtSecondary = LocalDateTime.parse("2025-04-04T22:35:30");
 
@@ -52,8 +54,6 @@ public class TeacherServiceTest {
     /// Test - Find teacher by ID
     public void testFindById() {
         // Arrange
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
         Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt); 
 
         // Act

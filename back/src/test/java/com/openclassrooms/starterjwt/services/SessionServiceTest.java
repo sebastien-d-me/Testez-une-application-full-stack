@@ -20,11 +20,26 @@ public class SessionServiceTest {
 
     @Mock
     private SessionRepository sessionRepository;
+    private Date sessionDate;
+    Teacher teacher;
+    List<User> users;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+
+        sessionDate = new Date();
+        createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
+        updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
+
+        teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
+
+        users = new ArrayList<>();
+        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
+        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
     }
 
     
@@ -32,16 +47,6 @@ public class SessionServiceTest {
     /// Test - Create a session
     public void testCreate() {
         // Arrange
-        Date sessionDate = new Date();
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
-
-        Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
-
-        List<User> users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
-
         Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
 
         // Act
@@ -57,18 +62,10 @@ public class SessionServiceTest {
     /// Test - Find all sessions
     public void testFindAll() {
         // Arrange
-        Date sessionDate = new Date();
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
         LocalDateTime createdAtSecondary = LocalDateTime.parse("2025-04-03T22:30:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
         LocalDateTime updatedAtSecondary = LocalDateTime.parse("2025-04-04T22:35:30");
 
-        Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
         Teacher teacherSecondary = new Teacher(2L, "DUPONT", "Jean", createdAtSecondary, updatedAtSecondary);
-
-        List<User> users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
 
         List<Session> sessions = new ArrayList<>();
         sessions.add(new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt));
@@ -87,16 +84,6 @@ public class SessionServiceTest {
     /// Test - Find session by ID
     public void testGetById() {
         // Arrange
-        Date sessionDate = new Date();
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
-
-        Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
-
-        List<User> users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
-
         Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
 
         // Act
@@ -112,16 +99,6 @@ public class SessionServiceTest {
     /// Test - Delete
     public void testDelete() {
         // Arrange
-        Date sessionDate = new Date();
-        LocalDateTime createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
-        LocalDateTime updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
-
-        Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
-
-        List<User> users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
-
         Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
 
         // Act
