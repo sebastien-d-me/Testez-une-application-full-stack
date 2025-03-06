@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.models;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import com.openclassrooms.starterjwt.services.TeacherService;
@@ -113,5 +114,21 @@ public class TeacherTest {
 
         // Assert
         assertEquals("Teacher(id=1, lastName=DOE, firstName=John, createdAt="+createdAt+", updatedAt="+updatedAt+")", teacher.toString());
+    }
+    
+
+    @Test
+    /// Test - Hash
+    public void testHashCode() {
+        // Arrange
+        Teacher teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
+        
+        // Act
+        when(teacherRepository.save(teacher)).thenReturn(teacher);
+        when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
+        Teacher teacherFound = teacherService.findById(1L);
+
+        // Assert
+        assertTrue(teacher.hashCode() == teacherFound.hashCode());
     }
 }

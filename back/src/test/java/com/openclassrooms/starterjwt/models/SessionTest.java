@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.models;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
 import com.openclassrooms.starterjwt.services.SessionService;
@@ -140,5 +141,21 @@ public class SessionTest {
 
         // Assert
         assertEquals("Session(id=1, name=Lorem ipsum, date="+sessionDate+", description=Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque., teacher=Teacher(id=1, lastName=DOE, firstName=John, createdAt="+createdAt+", updatedAt="+updatedAt+"), users=[User(id=1, email=martin.petit@test.com, lastName=PETIT, firstName=Martin, password=password123, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+"), " + "User(id=2, email=leon.bernard@test.com, lastName=BERNARD, firstName=Léon, password=password123, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+")], createdAt="+createdAt+", updatedAt="+updatedAt+")", session.toString());
+    }
+        
+
+    @Test
+    /// Test - Hash
+    public void testHashCode() {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+        
+        // Act
+        when(sessionRepository.save(session)).thenReturn(session);
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        Session sessionFound = sessionService.getById(1L);
+
+        // Assert
+        assertTrue(session.hashCode() == sessionFound.hashCode());
     }
 }

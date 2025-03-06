@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.models;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.services.UserService;
@@ -130,5 +131,21 @@ public class UserTest {
 
         // Assert
         assertEquals("User(id=1, email=john.doe@test.com, lastName=DOE, firstName=John, password=password, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+")", user.toString());
+    }
+
+
+    @Test
+    /// Test - Hash
+    public void testHashCode() {
+        // Arrange
+        User user = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt);
+        
+        // Act
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        User userFound = userService.findById(1L);
+
+        // Assert
+        assertTrue(user.hashCode() == userFound.hashCode());
     }
 }
