@@ -53,7 +53,6 @@ public class UserTest {
         assertEquals("John", user.getFirstName());
         assertEquals("password", user.getPassword());
         assertEquals(false, user.isAdmin());
-        assertEquals("password", user.getPassword());
         assertEquals(createdAt, user.getCreatedAt());
         assertEquals(updatedAt, user.getUpdatedAt());
     }
@@ -106,7 +105,6 @@ public class UserTest {
         assertEquals("John", user.getFirstName());
         assertEquals("password", user.getPassword());
         assertEquals(false, user.isAdmin());
-        assertEquals("password", user.getPassword());
         assertEquals(createdAt, user.getCreatedAt());
         assertEquals(updatedAt, user.getUpdatedAt());
     }
