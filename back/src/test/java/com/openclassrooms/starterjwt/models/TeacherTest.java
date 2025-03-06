@@ -118,6 +118,20 @@ public class TeacherTest {
     
 
     @Test
+    /// Test - Builder To String
+    public void testBuilderToString() {
+        // Arrange
+        com.openclassrooms.starterjwt.models.Teacher.TeacherBuilder teacher = Teacher.builder().id(1L).lastName("DOE").firstName("John").createdAt(createdAt).updatedAt(updatedAt);
+
+        // Act
+        String teacherStr = teacher.toString();
+
+        // Assert
+        assertEquals("Teacher.TeacherBuilder(id=1, lastName=DOE, firstName=John, createdAt="+createdAt+", updatedAt="+updatedAt+")", teacherStr);
+    }
+    
+
+    @Test
     /// Test - Hash
     public void testHashCode() {
         // Arrange

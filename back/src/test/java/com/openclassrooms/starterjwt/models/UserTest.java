@@ -135,6 +135,20 @@ public class UserTest {
 
 
     @Test
+    /// Test - Builder To String
+    public void testBuilderToString() {
+        // Arrange
+        com.openclassrooms.starterjwt.models.User.UserBuilder user = User.builder().id(1L).email("john.doe@test.com").lastName("DOE").firstName("John").password("password").admin(false).createdAt(createdAt).updatedAt(updatedAt);
+
+        // Act
+        String userStr = user.toString();
+
+        // Assert
+        assertEquals("User.UserBuilder(id=1, email=john.doe@test.com, lastName=DOE, firstName=John, password=password, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+")", userStr);
+    }
+
+
+    @Test
     /// Test - Hash
     public void testHashCode() {
         // Arrange

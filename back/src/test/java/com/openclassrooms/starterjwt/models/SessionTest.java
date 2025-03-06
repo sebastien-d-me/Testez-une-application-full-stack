@@ -145,6 +145,20 @@ public class SessionTest {
         
 
     @Test
+    /// Test - Builder To String
+    public void testBuilderToString() {
+        // Arrange
+        com.openclassrooms.starterjwt.models.Session.SessionBuilder session = Session.builder().id(1L).name("Lorem ipsum").date(sessionDate).description("Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.").teacher(teacher).users(users).createdAt(createdAt).updatedAt(updatedAt);
+
+        // Act
+        String sessionStr = session.toString();
+
+        // Assert
+        assertEquals("Session.SessionBuilder(id=1, name=Lorem ipsum, date="+sessionDate+", description=Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque., teacher=Teacher(id=1, lastName=DOE, firstName=John, createdAt="+createdAt+", updatedAt="+updatedAt+"), users=[User(id=1, email=martin.petit@test.com, lastName=PETIT, firstName=Martin, password=password123, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+"), " + "User(id=2, email=leon.bernard@test.com, lastName=BERNARD, firstName=Léon, password=password123, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+")], createdAt="+createdAt+", updatedAt="+updatedAt+")", sessionStr);
+    }
+        
+
+    @Test
     /// Test - Hash
     public void testHashCode() {
         // Arrange
