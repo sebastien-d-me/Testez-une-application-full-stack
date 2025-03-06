@@ -26,20 +26,6 @@ public class UserServiceTest {
 
     
     @Test
-    /// Test - Find user by ID
-    public void testFindById() {
-        // Arrange
-        User user = new User("john.doe@test.com", "DOE", "John", "password", false); 
-
-        // Act
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        User userFound = userService.findById(1L);
- 
-        // Assert
-        assertEquals("john.doe@test.com", userFound.getEmail());
-    }
-
-    @Test
     /// Test - Delete user by ID
     public void testDelete() {
         // Arrange
@@ -51,5 +37,20 @@ public class UserServiceTest {
 
         // Assert
         verify(userRepository).deleteById(user.getId());
+    }
+
+
+    @Test
+    /// Test - Find user by ID
+    public void testFindById() {
+        // Arrange
+        User user = new User("john.doe@test.com", "DOE", "John", "password", false); 
+
+        // Act
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        User userFound = userService.findById(1L);
+ 
+        // Assert
+        assertEquals("john.doe@test.com", userFound.getEmail());
     }
 }

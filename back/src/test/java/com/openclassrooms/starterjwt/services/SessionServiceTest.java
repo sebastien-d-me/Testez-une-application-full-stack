@@ -59,6 +59,21 @@ public class SessionServiceTest {
 
 
     @Test
+    /// Test - Delete
+    public void testDelete() {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+
+        // Act
+        doNothing().when(sessionRepository).deleteById(session.getId());
+        sessionService.delete(session.getId());
+
+        // Assert
+        verify(sessionRepository).deleteById(session.getId());
+    }
+
+
+    @Test
     /// Test - Find all sessions
     public void testFindAll() {
         // Arrange
@@ -96,16 +111,19 @@ public class SessionServiceTest {
 
 
     @Test
-    /// Test - Delete
-    public void testDelete() {
+    /// Test - Update a session
+    public void testUpdate() {
         // Arrange
         Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
-
+        
         // Act
-        doNothing().when(sessionRepository).deleteById(session.getId());
-        sessionService.delete(session.getId());
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(sessionRepository.save(session)).thenReturn(session);
+        Session sessionFound = sessionService.getById(1L);
+        sessionFound.setName("Lorem ipsum updated");
+        Session sessionsUpdated = sessionService.update(1L, sessionFound);
 
         // Assert
-        verify(sessionRepository).deleteById(session.getId());
+        assertEquals("Lorem ipsum updated", sessionsUpdated.getName());
     }
 }
