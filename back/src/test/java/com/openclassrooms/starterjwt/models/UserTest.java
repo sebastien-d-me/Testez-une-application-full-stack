@@ -24,6 +24,7 @@ public class UserTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+        
         createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
         updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
     }
