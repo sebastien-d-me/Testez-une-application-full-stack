@@ -32,7 +32,7 @@ public class TeacherTest {
 
     @Test
     /// Test - Setter of the teacher
-    public void setter() {
+    public void testSetter() {
         // Arrange
         Teacher teacher = new Teacher();
         teacher.setId(1L);
@@ -55,7 +55,7 @@ public class TeacherTest {
 
     @Test
     /// Test - Getter of the teacher
-    public void getter() {
+    public void testGetter() {
         // Arrange
         Teacher teacher = new Teacher();
         teacher.setId(1L);
@@ -80,7 +80,7 @@ public class TeacherTest {
 
     @Test
     /// Test - Builder of the teacher
-    public void builderTeacher() {
+    public void testBuilderTeacher() {
         // Arrange
         Teacher teacher = Teacher.builder().id(1L).lastName("DOE").firstName("John").createdAt(createdAt).updatedAt(updatedAt).build();
 
@@ -93,5 +93,25 @@ public class TeacherTest {
         assertEquals("John", teacher.getFirstName());
         assertEquals(createdAt, teacher.getCreatedAt());
         assertEquals(updatedAt, teacher.getUpdatedAt());
+    }
+
+        
+
+    @Test
+    /// Test - To String
+    public void testToString() {
+        // Arrange
+        Teacher teacher = new Teacher();
+        teacher.setId(1L);
+        teacher.setLastName("DOE");
+        teacher.setFirstName("John");
+        teacher.setCreatedAt(createdAt);
+        teacher.setUpdatedAt(updatedAt);
+
+        // Act
+        when(teacherRepository.save(teacher)).thenReturn(teacher);
+
+        // Assert
+        assertEquals("Teacher(id=1, lastName=DOE, firstName=John, createdAt="+createdAt+", updatedAt="+updatedAt+")", teacher.toString());
     }
 }

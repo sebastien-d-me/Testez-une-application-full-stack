@@ -24,7 +24,7 @@ public class UserTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        
+
         createdAt = LocalDateTime.parse("2025-03-03T23:50:00");
         updatedAt = LocalDateTime.parse("2025-03-04T00:04:30");
     }
@@ -32,7 +32,7 @@ public class UserTest {
 
     @Test
     /// Test - Setter of the user
-    public void setter() {
+    public void testSetter() {
         // Arrange
         User user = new User();
         user.setId(1L);
@@ -61,7 +61,7 @@ public class UserTest {
 
     @Test
     /// Test - Getter of the user
-    public void getter() {
+    public void testGetter() {
         // Arrange
         User user = new User();
         user.setId(1L);
@@ -92,7 +92,7 @@ public class UserTest {
 
     @Test
     /// Test - Builder of the user
-    public void builderUser() {
+    public void testBuilderUser() {
         // Arrange
         User user = User.builder().id(1L).email("john.doe@test.com").lastName("DOE").firstName("John").password("password").admin(false).createdAt(createdAt).updatedAt(updatedAt).build();
 
@@ -108,5 +108,27 @@ public class UserTest {
         assertEquals(false, user.isAdmin());
         assertEquals(createdAt, user.getCreatedAt());
         assertEquals(updatedAt, user.getUpdatedAt());
+    }
+
+
+    @Test
+    /// Test - To String
+    public void testToString() {
+        // Arrange
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("john.doe@test.com");
+        user.setLastName("DOE");
+        user.setFirstName("John");
+        user.setPassword("password");
+        user.setAdmin(false);
+        user.setCreatedAt(createdAt);
+        user.setUpdatedAt(updatedAt); 
+
+        // Act
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        assertEquals("User(id=1, email=john.doe@test.com, lastName=DOE, firstName=John, password=password, admin=false, createdAt="+createdAt+", updatedAt="+updatedAt+")", user.toString());
     }
 }
