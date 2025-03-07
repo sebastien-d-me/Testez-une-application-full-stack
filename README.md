@@ -52,6 +52,6 @@ Testez une application full-stack
 * Effectuez la commande : `npm run test:coverage` pour générer le rapport de couverture
 2. Effectuez la commande : `npm run e2e` dans le répertoire "front" et lancer les tests indivuellement 
 * Pour le coverage, lancez le test avec Cypress de : `allE2E.cy.ts`
-3. Effectuez la commande `mvn clean test` dans le répertoire "back" (pour lancer les tests du back-end et générer un rapport de couverture)
+3. Effectuez la commande `mvn clean test` dans le répertoire "back" (pour lancer les tests du back-end et générer un rapport de couverture) À lancer uniquement le serveur back coupé
 4. En cas de besoin, la page des tests du front-end, se trouve dans le répertoire "front/coverage/jest/"
 5. En cas de besoin, la page des tests du back-end, se trouve dans le répertoire "back/target/site/jacoco"
