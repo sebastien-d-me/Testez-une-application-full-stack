@@ -59,4 +59,38 @@ public class UserControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.email").value(user.getEmail()));
     }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Get the details of a non existing user
+    public void testFindByNonExistId() throws Exception {
+        // Arrange
+        User user = new User(2L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
+
+        // Act
+        when(userRepository.findById(2L)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        mockMvc.perform(get("/api/user/1"))
+            .andExpect(status().isNotFound());
+    }
+    
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Get the details of a non number user ID
+    public void testFindByNonNumberId() throws Exception {
+        // Arrange
+        User user = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
+
+        // Act
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        mockMvc.perform(get("/api/user/abc"))
+            .andExpect(status().isBadRequest());
+    }
 }
