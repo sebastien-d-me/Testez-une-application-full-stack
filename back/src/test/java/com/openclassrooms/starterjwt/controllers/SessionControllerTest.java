@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,8 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.*;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
 
@@ -38,11 +46,15 @@ public class SessionControllerTest {
     @MockBean
     private SessionRepository sessionRepository;
 
+    @MockBean
+    private SessionMapper sessionMapper;
+
 
     @Mock
     private Date sessionDate;
     Teacher teacher;
     List<User> users;
+    List<Long> usersId;
 
 
     @BeforeEach
@@ -55,9 +67,16 @@ public class SessionControllerTest {
 
         teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
 
+        User userOne = new User("martin.petit@test.com", "PETIT", "Martin", "password123", false); 
+        User userTwo = new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false);
+
         users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
+        users.add(userOne); 
+        users.add(userTwo);
+        
+        usersId = new ArrayList<>();
+        usersId.add(userOne.getId()); 
+        usersId.add(userTwo.getId()); 
     }
 
     
@@ -134,6 +153,32 @@ public class SessionControllerTest {
 
         // Assert
         mockMvc.perform(get("/api/session"))
+            .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Create a session
+    public void testCreate() throws Exception {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+        SessionDto sessionDTO = new SessionDto(1L, "Lorem ipsum", sessionDate, 1L, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", usersId, createdAt, updatedAt);
+
+        ObjectMapper sessionRequestObject = new ObjectMapper();
+        sessionRequestObject.registerModule(new JavaTimeModule());
+        sessionRequestObject.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String sessionRequestJSON = sessionRequestObject.writeValueAsString(sessionDTO);
+        Session sessionMapped = sessionMapper.toEntity(sessionDTO);
+
+        // Act
+        when(sessionRepository.save(sessionMapped)).thenReturn(session);
+        
+        // Assert
+        mockMvc.perform(post("/api/session")
+            .content(sessionRequestJSON)
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 
