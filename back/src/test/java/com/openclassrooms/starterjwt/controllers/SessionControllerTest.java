@@ -1,7 +1,9 @@
 package com.openclassrooms.starterjwt.controllers;
 
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDateTime;
@@ -133,5 +135,57 @@ public class SessionControllerTest {
         // Assert
         mockMvc.perform(get("/api/session"))
             .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Delete a not existing session ID
+    public void testDeleteNotExist() throws Exception {
+        // Arrange
+        Session session = new Session(2L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+
+        // Act
+        doNothing().when(sessionRepository).delete(session);
+        when(sessionRepository.save(session)).thenReturn(session);
+
+        // Assert
+        mockMvc.perform(delete("/api/session/1"))
+            .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Delete a existing session ID
+    public void testDelete() throws Exception {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+
+        // Act
+        doNothing().when(sessionRepository).delete(session);
+        when(sessionRepository.save(session)).thenReturn(session);
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+
+        // Assert
+        mockMvc.perform(delete("/api/session/1"))
+            .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Delete a not number session ID
+    public void testDeleteNotNumber() throws Exception {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+
+        // Act
+        doNothing().when(sessionRepository).delete(session);
+        when(sessionRepository.save(session)).thenReturn(session);
+
+        // Assert
+        mockMvc.perform(delete("/api/session/abc"))
+            .andExpect(status().isBadRequest());
     }
 }
