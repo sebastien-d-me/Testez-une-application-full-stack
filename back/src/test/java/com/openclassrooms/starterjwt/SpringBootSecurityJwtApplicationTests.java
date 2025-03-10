@@ -12,4 +12,11 @@ public class SpringBootSecurityJwtApplicationTests {
     /// Test - Chargement
 	public void contextLoads() {
 	}
+
+
+    @Test
+    /// Test - Main
+    public void testMain() {
+        SpringBootSecurityJwtApplication.main(new String[]{});
+    }
 }
