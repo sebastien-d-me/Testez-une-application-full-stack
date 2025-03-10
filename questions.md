@@ -1,3 +1,0 @@
-- Savoir si mes tests sont OK
-- Savoir si OK de cacher DTO et mappers dans le pom.xml
-- Savoir pourquoi optional ou non sur le usercontrollertest

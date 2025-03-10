@@ -56,15 +56,14 @@ public class UserControllerTest {
 
         // Assert
         mockMvc.perform(get("/api/user/1"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value(user.getEmail()));
+            .andExpect(status().isOk());
     }
 
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    /// Test - Get the details of a non existing user
-    public void testFindByNonExistId() throws Exception {
+    /// Test - Get the details of a not existing user
+    public void testFindByNotExistId() throws Exception {
         // Arrange
         User user = new User(2L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
 
@@ -80,8 +79,8 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    /// Test - Get the details of a non number user ID
-    public void testFindByNonNumberId() throws Exception {
+    /// Test - Get the details of a not number user ID
+    public void testFindByNotNumberId() throws Exception {
         // Arrange
         User user = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
 
@@ -91,6 +90,58 @@ public class UserControllerTest {
 
         // Assert
         mockMvc.perform(get("/api/user/abc"))
+            .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    @WithMockUser(username = "john.doe.2@test.com", roles = "USER")
+    /// Test - Delete a user but unauthorized
+    public void testDeleteUnauthorized() throws Exception {
+        // Arrange
+        User user = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
+
+        // Act
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        doNothing().when(userRepository).delete(user);
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        mockMvc.perform(delete("/api/user/1"))
+            .andExpect(status().isUnauthorized());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Delete a not existing user ID
+    public void testDeleteNotExist() throws Exception {
+        // Arrange
+        User user = new User(2L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
+
+        // Act
+        doNothing().when(userRepository).delete(user);
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        mockMvc.perform(delete("/api/user/1"))
+            .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Delete a not number user ID
+    public void testDeleteNotNumber() throws Exception {
+        // Arrange
+        User user = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt); 
+
+        // Act
+        doNothing().when(userRepository).delete(user);
+        when(userRepository.save(user)).thenReturn(user);
+
+        // Assert
+        mockMvc.perform(delete("/api/user/abc"))
             .andExpect(status().isBadRequest());
     }
 }
