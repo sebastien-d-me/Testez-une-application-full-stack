@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -45,6 +46,7 @@ public class SessionControllerTest {
 
     @MockBean
     private SessionRepository sessionRepository;
+
 
     @MockBean
     private SessionMapper sessionMapper;
@@ -180,6 +182,32 @@ public class SessionControllerTest {
             .content(sessionRequestJSON)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Update a not number session ID
+    public void testUpdateNotNumber() throws Exception {
+        // Arrange
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+        SessionDto sessionDTO = new SessionDto(1L, "Lorem ipsum", sessionDate, 1L, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", usersId, createdAt, updatedAt);
+
+        ObjectMapper sessionRequestObject = new ObjectMapper();
+        sessionRequestObject.registerModule(new JavaTimeModule());
+        sessionRequestObject.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String sessionRequestJSON = sessionRequestObject.writeValueAsString(sessionDTO);
+        Session sessionMapped = sessionMapper.toEntity(sessionDTO);
+
+        // Act
+        when(sessionRepository.save(sessionMapped)).thenReturn(session);
+        
+        // Assert
+        mockMvc.perform(put("/api/session/abc")
+            .content(sessionRequestJSON)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
 
