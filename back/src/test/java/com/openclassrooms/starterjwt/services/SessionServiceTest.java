@@ -2,11 +2,15 @@ package com.openclassrooms.starterjwt.services;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+import com.openclassrooms.starterjwt.exception.BadRequestException;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
+import com.openclassrooms.starterjwt.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.*;
 import org.junit.jupiter.api.*;
@@ -17,12 +21,16 @@ public class SessionServiceTest {
     @InjectMocks
     private SessionService sessionService;
 
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private SessionRepository sessionRepository;
+
     private Date sessionDate;
     Teacher teacher;
     List<User> users;
+    List<User> usersList;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -37,9 +45,11 @@ public class SessionServiceTest {
 
         teacher = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
 
+        User userOne = new User("martin.petit@test.com", "PETIT", "Martin", "password123", false);
+        User userTwo = new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false);
         users = new ArrayList<>();
-        users.add(new User("martin.petit@test.com", "PETIT", "Martin", "password123", false)); 
-        users.add(new User("leon.bernard@test.com", "BERNARD", "Léon", "password123", false)); 
+        users.add(userOne); 
+        users.add(userTwo); 
     }
 
     
@@ -125,5 +135,47 @@ public class SessionServiceTest {
 
         // Assert
         assertEquals("Lorem ipsum updated", sessionsUpdated.getName());
+    }
+
+    @Test
+    /// Test - Participate
+    public void testParticipate() {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+
+        usersList = new ArrayList<>();
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        
+        sessionService.participate(1L, 1L);
+
+        // Assert
+        assertTrue(session.getUsers().contains(userOne));
+    }
+
+
+    @Test
+    /// Test - Already Participate
+    public void testAlreadyParticipate() {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+
+        usersList = new ArrayList<>();
+        usersList.add(userOne);
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        
+        // Assert
+        assertThrows(BadRequestException.class, () -> {
+            sessionService.participate(1L, 1L);
+        });
     }
 }
