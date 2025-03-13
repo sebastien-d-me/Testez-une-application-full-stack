@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import com.openclassrooms.starterjwt.exception.BadRequestException;
+import com.openclassrooms.starterjwt.exception.NotFoundException;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
@@ -176,6 +177,28 @@ public class SessionServiceTest {
         // Assert
         assertThrows(BadRequestException.class, () -> {
             sessionService.participate(1L, 1L);
+        });
+    }
+
+
+    @Test
+    /// Test - Null Participate
+    public void testNullParticipate() {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+
+        usersList = new ArrayList<>();
+        usersList.add(userOne);
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        
+        // Assert
+        assertThrows(NotFoundException.class, () -> {
+            sessionService.participate(null, null);
         });
     }
 }
