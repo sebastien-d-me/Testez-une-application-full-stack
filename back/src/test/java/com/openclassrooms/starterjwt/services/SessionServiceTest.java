@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.services;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -199,6 +200,49 @@ public class SessionServiceTest {
         // Assert
         assertThrows(NotFoundException.class, () -> {
             sessionService.participate(null, null);
+        });
+    }
+
+    @Test
+    /// Test - Unparticipate
+    public void testUnParticipate() {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+
+        usersList = new ArrayList<>();
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        sessionService.participate(1L, 1L);
+
+        sessionService.noLongerParticipate(1L, 1L);
+
+        // Assert
+        assertFalse(session.getUsers().contains(userOne));
+    }
+
+
+    @Test
+    /// Test - Null Unparticipate
+    public void testNullUnParticipate() {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+
+        usersList = new ArrayList<>();
+        usersList.add(userOne);
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        
+        // Assert
+        assertThrows(NotFoundException.class, () -> {
+            sessionService.noLongerParticipate(null, null);
         });
     }
 }
