@@ -67,4 +67,27 @@ public class SignupRequestTest {
         // Assert
         assertFalse(signupRequestOne.hashCode() == signupRequestTwo.hashCode());
     }
+
+
+    @Test
+    /// Test - Equals
+    public void testEquals() {
+        // Arrange
+        SignupRequest signupRequestOne = new SignupRequest();
+        signupRequestOne.setEmail("john.doe@test.com");
+        signupRequestOne.setFirstName("John");
+        signupRequestOne.setLastName("DOE");
+        signupRequestOne.setPassword("password123");
+
+        SignupRequest signupRequestTwo = new SignupRequest();
+        signupRequestTwo.setEmail("john.doe@test.com");
+        signupRequestTwo.setFirstName("John");
+        signupRequestTwo.setLastName("DOE");
+        signupRequestTwo.setPassword("password123");
+        
+        // Act
+
+        // Assert
+        assertTrue(signupRequestOne.equals(signupRequestTwo));
+    }
 }
