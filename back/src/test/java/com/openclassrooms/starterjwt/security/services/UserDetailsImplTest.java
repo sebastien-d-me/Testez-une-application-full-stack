@@ -1,50 +1,29 @@
 package com.openclassrooms.starterjwt.security.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.payload.request.SignupRequest;
-import com.openclassrooms.starterjwt.repository.UserRepository;
-import com.openclassrooms.starterjwt.services.UserService;
 
 public class UserDetailsImplTest {
     @InjectMocks
-    private UserService userService;
-
-
-    @InjectMocks
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-
-    @Mock
-    private UserRepository userRepository;
+    private UserDetailsImpl userDetailsImpl;
 
 
     @BeforeEach
     public void init() {
+        userDetailsImpl = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
+
         MockitoAnnotations.openMocks(this);
     }
 
 
     @Test
-    /// Test - Find by mail
+    /// Test - Get admin
     public void testGetAdmin() {
-        // Arrange
-        UserDetailsImpl userDetailsImpl = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
-
         // Assert
         assertEquals(false, userDetailsImpl.getAdmin());
     }
@@ -54,54 +33,40 @@ public class UserDetailsImplTest {
     /// Test - Equals
     public void testEquals() {
         // Arrange
-        UserDetailsImpl userDetailsImplOne = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
         UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
 
         // Assert
-        assertTrue(userDetailsImplOne.equals(userDetailsImplTwo));
+        assertTrue(userDetailsImpl.equals(userDetailsImplTwo));
     }
 
 
     @Test
     /// Test - Account not expired
     public void testNotExpired() {
-        // Arrange
-        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
-
         // Assert
-        assertTrue(userDetailsImplTwo.isAccountNonExpired());
+        assertTrue(userDetailsImpl.isAccountNonExpired());
     }
     
 
     @Test
     /// Test - Account not locked
     public void testNotLocked() {
-        // Arrange
-        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
-
         // Assert
-        assertTrue(userDetailsImplTwo.isAccountNonLocked());
+        assertTrue(userDetailsImpl.isAccountNonLocked());
     }
     
 
     @Test
     /// Test - Credential not expired
     public void testCredientialNotExpired() {
-        // Arrange
-        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
-
         // Assert
-        assertTrue(userDetailsImplTwo.isCredentialsNonExpired());
+        assertTrue(userDetailsImpl.isCredentialsNonExpired());
     }
     
 
     @Test
     /// Test - Account enabled
     public void testEnabled() {
-        // Arrange
-        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
-
-        // Assert
-        assertTrue(userDetailsImplTwo.isEnabled());
+        assertTrue(userDetailsImpl.isEnabled());
     }
 }
