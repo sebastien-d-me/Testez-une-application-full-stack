@@ -30,6 +30,8 @@ import com.openclassrooms.starterjwt.dto.SessionDto;
 import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.*;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
+import com.openclassrooms.starterjwt.repository.UserRepository;
+import com.openclassrooms.starterjwt.services.SessionService;
 
 
 @AutoConfigureMockMvc
@@ -38,14 +40,23 @@ public class SessionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Mock
+    private SessionService sessionService;
+
 
     @InjectMocks
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
 
+    @InjectMocks
+    private SessionController sessionController;
+
     @MockBean
     private SessionRepository sessionRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
 
     @MockBean
@@ -57,6 +68,8 @@ public class SessionControllerTest {
     Teacher teacher;
     List<User> users;
     List<Long> usersId;
+
+    List<User> usersList;
 
 
     @BeforeEach
@@ -183,7 +196,7 @@ public class SessionControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
-
+    
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -236,7 +249,7 @@ public class SessionControllerTest {
         Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
 
         // Act
-        doNothing().when(sessionRepository).delete(session);
+        doNothing().when(sessionRepository).deleteById(1L);
         when(sessionRepository.save(session)).thenReturn(session);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 
@@ -261,4 +274,49 @@ public class SessionControllerTest {
         mockMvc.perform(delete("/api/session/abc"))
             .andExpect(status().isBadRequest());
     }
+
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Participate at a session
+    public void testParticipate() throws Exception {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+        usersList = new ArrayList<>();
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        sessionController.participate("1L", "1L");
+
+        // Assert
+        mockMvc.perform(post("/api/session/1/participate/1"))
+            .andExpect(status().isOk());
+    } 
+
+    
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    /// Test - Unparticipate at a session
+    public void testUnParticipate() throws Exception {
+        // Arrange
+        User userOne = new User(1L, "martin.petit@test.com", "PETIT", "Martin", "password123", false, createdAt, updatedAt);
+        usersList = new ArrayList<>();
+        usersList.add(userOne);
+        Session session = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, usersList, createdAt, updatedAt);
+
+        // Act
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userOne));
+        when(sessionRepository.save(session)).thenReturn(session);
+        sessionController.participate("1L", "1L");
+        sessionController.noLongerParticipate("1L", "1L");
+
+        // Assert
+        mockMvc.perform(delete("/api/session/1/participate/1"))
+            .andExpect(status().isOk());
+    } 
 }
