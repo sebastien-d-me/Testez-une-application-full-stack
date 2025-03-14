@@ -14,7 +14,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.payload.request.SignupRequest;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.services.UserService;
 
@@ -47,6 +49,7 @@ public class UserDetailsImplTest {
         assertEquals(false, userDetailsImpl.getAdmin());
     }
 
+
     @Test
     /// Test - Equals
     public void testEquals() {
@@ -56,5 +59,49 @@ public class UserDetailsImplTest {
 
         // Assert
         assertTrue(userDetailsImplOne.equals(userDetailsImplTwo));
+    }
+
+
+    @Test
+    /// Test - Account not expired
+    public void testNotExpired() {
+        // Arrange
+        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
+
+        // Assert
+        assertTrue(userDetailsImplTwo.isAccountNonExpired());
+    }
+    
+
+    @Test
+    /// Test - Account not locked
+    public void testNotLocked() {
+        // Arrange
+        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
+
+        // Assert
+        assertTrue(userDetailsImplTwo.isAccountNonLocked());
+    }
+    
+
+    @Test
+    /// Test - Credential not expired
+    public void testCredientialNotExpired() {
+        // Arrange
+        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
+
+        // Assert
+        assertTrue(userDetailsImplTwo.isCredentialsNonExpired());
+    }
+    
+
+    @Test
+    /// Test - Account enabled
+    public void testEnabled() {
+        // Arrange
+        UserDetailsImpl userDetailsImplTwo = new UserDetailsImpl(1L, "john.doe@test.com", "John", "DOE", false, "password");
+
+        // Assert
+        assertTrue(userDetailsImplTwo.isEnabled());
     }
 }
