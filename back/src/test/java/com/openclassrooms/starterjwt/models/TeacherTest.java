@@ -145,4 +145,16 @@ public class TeacherTest {
         // Assert
         assertTrue(teacher.hashCode() == teacherFound.hashCode());
     }
+    
+    
+    @Test
+    /// Test - Equals
+    public void testEquals() {
+        // Arrange
+        Teacher teacherOne = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
+        Teacher teacherTwo = new Teacher(1L, "DOE", "John", createdAt, updatedAt);
+
+        // Assert
+        assertTrue(teacherOne.equals(teacherTwo));
+    }
 }

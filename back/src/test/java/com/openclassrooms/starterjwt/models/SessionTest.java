@@ -172,4 +172,17 @@ public class SessionTest {
         // Assert
         assertTrue(session.hashCode() == sessionFound.hashCode());
     }
+
+    
+    
+    @Test
+    /// Test - Equals
+    public void testEquals() {
+        // Arrange
+        Session sessionOne = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+        Session sessionTwo = new Session(1L, "Lorem ipsum", sessionDate, "Suspendisse potenti. Praesent orci ligula, rhoncus ut semper ut, ullamcorper eget neque.", teacher, users, createdAt, updatedAt);
+
+        // Assert
+        assertTrue(sessionOne.equals(sessionTwo));
+    }
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import com.openclassrooms.starterjwt.repository.UserRepository;
+import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
 import com.openclassrooms.starterjwt.services.UserService;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -161,5 +162,17 @@ public class UserTest {
 
         // Assert
         assertTrue(user.hashCode() == userFound.hashCode());
+    }
+
+    
+    @Test
+    /// Test - Equals
+    public void testEquals() {
+        // Arrange
+        User userOne = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt);
+        User userTwo = new User(1L, "john.doe@test.com", "DOE", "John", "password", false, createdAt, updatedAt);
+
+        // Assert
+        assertTrue(userOne.equals(userTwo));
     }
 }
