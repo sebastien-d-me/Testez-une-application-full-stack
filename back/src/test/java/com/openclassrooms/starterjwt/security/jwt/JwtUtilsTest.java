@@ -2,8 +2,7 @@ package com.openclassrooms.starterjwt.security.jwt;
 
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 
 
@@ -15,11 +14,10 @@ public class JwtUtilsTest {
 
     
     @Test
-    /// Test - Not validate the JWT Token
-    public void testNotValidate() {
+    /// Test - Invalid authToken
+    public void testValidateJwtTokenFalse() {
         // Arrange
         JwtUtils jwtUtils = new JwtUtils();
-
         boolean validateJwtToken = jwtUtils.validateJwtToken("abc");
 
         // Assert

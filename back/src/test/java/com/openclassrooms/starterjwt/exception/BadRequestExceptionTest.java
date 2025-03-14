@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 
 public class BadRequestExceptionTest {
     @Test
-    /// Test - Instance
-    public void testInstance() {
+    /// Test - Extends exception
+    public void testExtendsException() {
         // Arrange
         BadRequestException badRequestException = new BadRequestException();
-
-        // Act
 
         // Assert
         assertTrue(badRequestException instanceof RuntimeException);

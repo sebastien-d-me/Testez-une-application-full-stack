@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 
 public class NotFoundExceptionTest {
     @Test
-    /// Test - Instance
-    public void testInstance() {
+    /// Test - Extends exception
+    public void testExtendsException() {
         // Arrange
         NotFoundException notFoundException = new NotFoundException();
-
-        // Act
 
         // Assert
         assertTrue(notFoundException instanceof RuntimeException);
