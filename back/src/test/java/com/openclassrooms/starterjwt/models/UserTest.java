@@ -33,37 +33,8 @@ public class UserTest {
 
 
     @Test
-    /// Test - Setter of the user
+    /// Test - Getter & Setter of the user
     public void testSetter() {
-        // Arrange
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("john.doe@test.com");
-        user.setLastName("DOE");
-        user.setFirstName("John");
-        user.setPassword("password");
-        user.setAdmin(false);
-        user.setCreatedAt(createdAt);
-        user.setUpdatedAt(updatedAt);
-
-        // Act
-        when(userRepository.save(user)).thenReturn(user);
-
-        // Assert
-        assertEquals(1L, user.getId());
-        assertEquals("john.doe@test.com", user.getEmail());
-        assertEquals("DOE", user.getLastName());
-        assertEquals("John", user.getFirstName());
-        assertEquals("password", user.getPassword());
-        assertEquals(false, user.isAdmin());
-        assertEquals(createdAt, user.getCreatedAt());
-        assertEquals(updatedAt, user.getUpdatedAt());
-    }
-
-
-    @Test
-    /// Test - Getter of the user
-    public void testGetter() {
         // Arrange
         User user = new User();
         user.setId(1L);
@@ -89,6 +60,15 @@ public class UserTest {
         assertEquals(user.isAdmin(), userFound.isAdmin());
         assertEquals(user.getCreatedAt(), userFound.getCreatedAt());
         assertEquals(user.getUpdatedAt(), userFound.getUpdatedAt());
+
+        assertEquals(1L, user.getId());
+        assertEquals("john.doe@test.com", user.getEmail());
+        assertEquals("DOE", user.getLastName());
+        assertEquals("John", user.getFirstName());
+        assertEquals("password", user.getPassword());
+        assertEquals(false, user.isAdmin());
+        assertEquals(createdAt, user.getCreatedAt());
+        assertEquals(updatedAt, user.getUpdatedAt());
     }
     
 
